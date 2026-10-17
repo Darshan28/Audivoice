@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { safeAppPath, setAuthIntent } from '@/lib/supabase'
+import { authCallbackRedirect, safeAppPath } from '@/lib/authPaths'
+import { setAuthIntent } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
@@ -102,6 +103,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  const authReturn = authCallbackRedirect(to.path, to.query, to.hash)
+  if (authReturn) return authReturn
+
   const auth = useAuthStore()
   await auth.init()
 

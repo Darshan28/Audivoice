@@ -38,6 +38,13 @@ export function friendlyAuthError(error: unknown, fallback = 'Sign-in failed. Pl
   if (lower.includes('email rate limit') || lower.includes('over_email_send_rate_limit')) {
     return 'Too many sign-in emails were sent. Wait a minute and try again.'
   }
+  if (
+    lower.includes('code verifier') ||
+    lower.includes('pkce') ||
+    lower.includes('both auth code and code verifier')
+  ) {
+    return 'Open the confirmation link in the same browser you used to sign up, then request a new email if it still fails.'
+  }
   if (lower.includes('network') || lower.includes('fetch')) {
     return 'Network error while signing in. Check your connection and try again.'
   }
