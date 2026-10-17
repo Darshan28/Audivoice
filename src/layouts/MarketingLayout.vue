@@ -5,7 +5,7 @@ import MarketingNav from '@/components/marketing/MarketingNav.vue'
 import { footerColumns, SITE_NAME, SITE_TAGLINE } from '@/content/marketing/site'
 
 const route = useRoute()
-/** Home owns its own above-the-fold chrome (original landing composition). */
+/** Home owns its own above-the-fold composition (nav lives in the shared chrome). */
 const isHome = computed(() => route.name === 'landing')
 </script>
 
@@ -16,9 +16,7 @@ const isHome = computed(() => route.name === 'landing')
       <div class="mkt-orb mkt-orb--b" />
     </div>
 
-    <div v-if="!isHome" class="mkt-nav-wrap">
-      <MarketingNav />
-    </div>
+    <MarketingNav />
 
     <main class="mkt-main" :class="{ 'mkt-main--home': isHome }">
       <RouterView />
@@ -95,7 +93,6 @@ const isHome = computed(() => route.name === 'landing')
   background: radial-gradient(circle, rgba(52, 211, 153, 0.28), transparent 70%);
 }
 
-.mkt-nav-wrap,
 .mkt-main,
 .mkt-footer {
   position: relative;
@@ -105,7 +102,8 @@ const isHome = computed(() => route.name === 'landing')
 .mkt-main {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 1rem 1.25rem 4rem;
+  /* Offset fixed glass nav (~4.5–5rem) */
+  padding: 5.25rem 1.25rem 4rem;
 }
 
 .mkt--home {
@@ -202,6 +200,8 @@ const isHome = computed(() => route.name === 'landing')
 .mkt-band-inner {
   max-width: 1120px;
   margin: 0 auto;
+  padding: 3rem 1.4rem;
+
 }
 
 .mkt-band--soft {
@@ -869,7 +869,13 @@ const isHome = computed(() => route.name === 'landing')
 }
 
 .mkt-final-cta.mkt-band {
-  margin-top: 3rem;
+  margin-top: 2rem;
+  /* Pull through .mkt-main’s bottom padding so the band meets the footer. */
+  margin-bottom: -2rem;
+}
+
+.mkt-section:has(+ .mkt-final-cta) {
+  padding-bottom: 0;
 }
 
 .mkt-final-cta.mkt-band--ink {

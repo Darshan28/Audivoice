@@ -67,9 +67,18 @@ async function logout() {
   <div class="app-shell">
     <div class="app-shell-bg" aria-hidden="true" />
     <header class="relative z-10 border-b border-audivoice-border/80 bg-white/80 backdrop-blur-md">
-      <div class="mx-auto flex max-w-3xl items-center justify-between px-5 py-4 sm:px-6">
+      <div class="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4 sm:px-6">
         <BrandMark to="/app/sessions" />
-        <Button variant="ghost" @click="router.push('/app/sessions')">Back</Button>
+        <div class="flex flex-wrap items-center gap-2">
+          <Button
+            v-if="auth.isAdmin"
+            variant="ghost"
+            @click="router.push('/app/admin')"
+          >
+            Admin
+          </Button>
+          <Button variant="ghost" @click="router.push('/app/sessions')">Back</Button>
+        </div>
       </div>
     </header>
 

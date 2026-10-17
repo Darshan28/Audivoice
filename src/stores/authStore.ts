@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Session, User } from '@supabase/supabase-js'
+import type { LoginAuditMethod } from '@shared/admin'
 import type { UserProfileDTO } from '@shared/onboarding'
 import {
   api,
@@ -15,6 +16,8 @@ import {
   getSupabaseBrowserClient,
   isSupabaseConfigured,
 } from '@/lib/supabase'
+
+const LOGIN_AUDIT_KEY = 'audivoice_login_audit_session'
 
 export type ProfileStatus = 'idle' | 'loading' | 'ready' | 'error'
 
@@ -65,8 +68,34 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => Boolean(session.value?.access_token && user.value))
   const onboardingCompleted = computed(() => Boolean(profile.value?.onboardingCompleted))
+  const isAdmin = computed(() => Boolean(profile.value?.isAdmin))
   const accessToken = computed(() => session.value?.access_token ?? null)
   const devLoginEnabled = computed(() => isDevLoginEnabled())
+
+  function loginMethodFromUser(u: User | null | undefined, fallback: LoginAuditMethod = 'magic_link'): LoginAuditMethod {
+    const provider = String(u?.app_metadata?.provider || '').toLowerCase()
+    if (provider === 'google') return 'google'
+    if (provider === 'dev') return 'dev'
+    if (provider === 'email') return 'magic_link'
+    return fallback
+  }
+
+  async function recordSuccessfulLogin(method: LoginAuditMethod) {
+    const token = session.value?.access_token
+    if (!token) return
+    try {
+      const already = sessionStorage.getItem(LOGIN_AUDIT_KEY)
+      if (already === token) return
+      sessionStorage.setItem(LOGIN_AUDIT_KEY, token)
+    } catch {
+      /* private mode — still attempt once per call site */
+    }
+    try {
+      await api.recordLoginAudit(method)
+    } catch {
+      /* non-blocking */
+    }
+  }
 
   async function refreshProfile() {
     if (!session.value?.access_token) {
@@ -186,6 +215,7 @@ export const useAuthStore = defineStore('auth', () => {
     profile.value = res.profile
     profileStatus.value = 'ready'
     ready.value = true
+    await recordSuccessfulLogin('dev')
   }
 
   async function signInWithGoogle() {
@@ -258,6 +288,7 @@ export const useAuthStore = defineStore('auth', () => {
     } catch {
       throw new Error('Signed in, but your profile could not be loaded. Refresh and try again.')
     }
+    await recordSuccessfulLogin(loginMethodFromUser(data.session.user))
   }
 
   async function completeOnboarding(input: {
@@ -284,6 +315,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function signOut() {
     clearDevAccessToken()
+    try {
+      sessionStorage.removeItem(LOGIN_AUDIT_KEY)
+    } catch {
+      /* private mode */
+    }
     if (isSupabaseConfigured()) {
       try {
         const supabase = getSupabaseBrowserClient()
@@ -308,6 +344,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     isAuthenticated,
     onboardingCompleted,
+    isAdmin,
     accessToken,
     devLoginEnabled,
     init,

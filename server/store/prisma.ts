@@ -1,6 +1,12 @@
 import { PrismaClient, type Prisma } from '@prisma/client'
 import { nanoid } from 'nanoid'
+import type { LoginAuditMethod } from '../../shared/admin.js'
 import type {
+  ContactSubmissionRecord,
+  CreateContactSubmissionInput,
+  CreateLoginAuditInput,
+  ListOptions,
+  LoginAuditRecord,
   OptionRecord,
   ParticipantRecord,
   QuestionRecord,
@@ -381,5 +387,127 @@ export class PrismaStore implements Store {
 
   async countResponsesForQuestion(questionId: string) {
     return this.prisma.response.count({ where: { questionId } })
+  }
+
+  async createContactSubmission(input: CreateContactSubmissionInput): Promise<ContactSubmissionRecord> {
+    const row = await this.prisma.contactSubmission.create({
+      data: {
+        fullName: input.fullName,
+        email: input.email,
+        enquiryType: input.enquiryType,
+        subject: input.subject,
+        message: input.message,
+        userAgent: input.userAgent ?? null,
+        ip: input.ip ?? null,
+      },
+    })
+    return {
+      id: row.id,
+      fullName: row.fullName,
+      email: row.email,
+      enquiryType: row.enquiryType,
+      subject: row.subject,
+      message: row.message,
+      userAgent: row.userAgent,
+      ip: row.ip,
+      createdAt: row.createdAt.toISOString(),
+    }
+  }
+
+  async listContactSubmissions(options: ListOptions = {}): Promise<ContactSubmissionRecord[]> {
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    const rows = await this.prisma.contactSubmission.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
+    })
+    return rows.map((row) => ({
+      id: row.id,
+      fullName: row.fullName,
+      email: row.email,
+      enquiryType: row.enquiryType,
+      subject: row.subject,
+      message: row.message,
+      userAgent: row.userAgent,
+      ip: row.ip,
+      createdAt: row.createdAt.toISOString(),
+    }))
+  }
+
+  async createLoginAudit(input: CreateLoginAuditInput): Promise<LoginAuditRecord> {
+    const row = await this.prisma.loginAudit.create({
+      data: {
+        authUserId: input.authUserId,
+        email: input.email ?? null,
+        method: input.method,
+        userAgent: input.userAgent ?? null,
+        ip: input.ip ?? null,
+      },
+    })
+    return {
+      id: row.id,
+      authUserId: row.authUserId,
+      email: row.email,
+      method: row.method as LoginAuditMethod,
+      userAgent: row.userAgent,
+      ip: row.ip,
+      createdAt: row.createdAt.toISOString(),
+    }
+  }
+
+  async listLoginAudits(
+    options: ListOptions & { authUserId?: string } = {},
+  ): Promise<LoginAuditRecord[]> {
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    const rows = await this.prisma.loginAudit.findMany({
+      where: options.authUserId ? { authUserId: options.authUserId } : undefined,
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
+    })
+    return rows.map((row) => ({
+      id: row.id,
+      authUserId: row.authUserId,
+      email: row.email,
+      method: row.method as LoginAuditMethod,
+      userAgent: row.userAgent,
+      ip: row.ip,
+      createdAt: row.createdAt.toISOString(),
+    }))
+  }
+
+  async listUserProfiles(options: ListOptions = {}): Promise<UserProfileRecord[]> {
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    const rows = await this.prisma.userProfile.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
+    })
+    return rows.map(mapUserProfile)
+  }
+
+  async countLoginAuditsByAuthUserIds(
+    authUserIds: string[],
+  ): Promise<Map<string, { count: number; lastLoginAt: string | null }>> {
+    const result = new Map<string, { count: number; lastLoginAt: string | null }>()
+    if (!authUserIds.length) return result
+
+    const grouped = await this.prisma.loginAudit.groupBy({
+      by: ['authUserId'],
+      where: { authUserId: { in: authUserIds } },
+      _count: { _all: true },
+      _max: { createdAt: true },
+    })
+
+    for (const row of grouped) {
+      result.set(row.authUserId, {
+        count: row._count._all,
+        lastLoginAt: row._max.createdAt?.toISOString() ?? null,
+      })
+    }
+    return result
   }
 }

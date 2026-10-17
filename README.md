@@ -85,7 +85,7 @@ If Supabase is not configured yet, use **Continue as test user** on `/auth` whil
 - `/` — Home
 - `/features/`, `/live-polls/`, `/qa/`, `/quizzes/`, `/surveys/`, `/ratings/`
 - `/use-cases/` and nested use-case pages
-- `/pricing/`, `/about/`, `/contact/`, `/help/`, `/resources/`
+- `/pricing/`, `/about/`, `/contact/`, `/help/`, `/blogs/`
 - `/privacy/`, `/terms/`, `/cookies/`
 
 ### Product
@@ -143,6 +143,8 @@ Capacity design target: **200 concurrent participants per session**.
 Full auth E2E checklist: [`AUTH_PRODUCTION_TEST.md`](./AUTH_PRODUCTION_TEST.md).
 
 ## Project structure
+
+System architecture (layers, auth, realtime, data flows): [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 ```
 api/           Vercel serverless entry (Hono)

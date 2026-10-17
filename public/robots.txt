@@ -5,4 +5,4 @@ Disallow: /participant/
 Disallow: /auth/callback
 Disallow: /demo
 
-Sitemap: https://audivoice.com/sitemap.xml
+Sitemap: https://www.audivoice.com/sitemap.xml

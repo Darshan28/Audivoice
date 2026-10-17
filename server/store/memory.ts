@@ -2,6 +2,11 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { nanoid } from 'nanoid'
 import type {
+  ContactSubmissionRecord,
+  CreateContactSubmissionInput,
+  CreateLoginAuditInput,
+  ListOptions,
+  LoginAuditRecord,
   OptionRecord,
   ParticipantRecord,
   QuestionRecord,
@@ -21,6 +26,8 @@ interface MemoryData {
   options: OptionRecord[]
   participants: ParticipantRecord[]
   responses: ResponseRecord[]
+  contacts: ContactSubmissionRecord[]
+  loginAudits: LoginAuditRecord[]
 }
 
 const empty = (): MemoryData => ({
@@ -30,6 +37,8 @@ const empty = (): MemoryData => ({
   options: [],
   participants: [],
   responses: [],
+  contacts: [],
+  loginAudits: [],
 })
 
 export class MemoryStore implements Store {
@@ -53,7 +62,12 @@ export class MemoryStore implements Store {
       parsed.users = (parsed.users || []).filter(
         (u) => typeof u.authUserId === 'string' && u.authUserId.length > 0,
       )
-      this.data = parsed
+      this.data = {
+        ...empty(),
+        ...parsed,
+        contacts: parsed.contacts ?? [],
+        loginAudits: parsed.loginAudits ?? [],
+      }
     } catch {
       this.data = empty()
     }
@@ -324,5 +338,86 @@ export class MemoryStore implements Store {
   async countResponsesForQuestion(questionId: string) {
     await this.ensure()
     return this.data.responses.filter((r) => r.questionId === questionId).length
+  }
+
+  async createContactSubmission(input: CreateContactSubmissionInput): Promise<ContactSubmissionRecord> {
+    await this.ensure()
+    const row: ContactSubmissionRecord = {
+      id: nanoid(),
+      fullName: input.fullName,
+      email: input.email,
+      enquiryType: input.enquiryType,
+      subject: input.subject,
+      message: input.message,
+      userAgent: input.userAgent ?? null,
+      ip: input.ip ?? null,
+      createdAt: new Date().toISOString(),
+    }
+    this.data.contacts.push(row)
+    this.schedulePersist()
+    return row
+  }
+
+  async listContactSubmissions(options: ListOptions = {}): Promise<ContactSubmissionRecord[]> {
+    await this.ensure()
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    return [...this.data.contacts]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(offset, offset + limit)
+  }
+
+  async createLoginAudit(input: CreateLoginAuditInput): Promise<LoginAuditRecord> {
+    await this.ensure()
+    const row: LoginAuditRecord = {
+      id: nanoid(),
+      authUserId: input.authUserId,
+      email: input.email ?? null,
+      method: input.method,
+      userAgent: input.userAgent ?? null,
+      ip: input.ip ?? null,
+      createdAt: new Date().toISOString(),
+    }
+    this.data.loginAudits.push(row)
+    this.schedulePersist()
+    return row
+  }
+
+  async listLoginAudits(
+    options: ListOptions & { authUserId?: string } = {},
+  ): Promise<LoginAuditRecord[]> {
+    await this.ensure()
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    return [...this.data.loginAudits]
+      .filter((row) => (options.authUserId ? row.authUserId === options.authUserId : true))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(offset, offset + limit)
+  }
+
+  async listUserProfiles(options: ListOptions = {}): Promise<UserProfileRecord[]> {
+    await this.ensure()
+    const limit = Math.min(Math.max(options.limit ?? 100, 1), 500)
+    const offset = Math.max(options.offset ?? 0, 0)
+    return [...this.data.users]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(offset, offset + limit)
+  }
+
+  async countLoginAuditsByAuthUserIds(
+    authUserIds: string[],
+  ): Promise<Map<string, { count: number; lastLoginAt: string | null }>> {
+    await this.ensure()
+    const result = new Map<string, { count: number; lastLoginAt: string | null }>()
+    for (const id of authUserIds) {
+      const rows = this.data.loginAudits
+        .filter((row) => row.authUserId === id)
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      result.set(id, {
+        count: rows.length,
+        lastLoginAt: rows[0]?.createdAt ?? null,
+      })
+    }
+    return result
   }
 }

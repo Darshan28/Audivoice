@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { navLinks } from '@/content/marketing/site'
 import { setAuthIntent } from '@/lib/supabase'
@@ -9,12 +9,22 @@ const router = useRouter()
 const auth = useAuthStore()
 const signedIn = ref(false)
 const menuOpen = ref(false)
+const scrolled = ref(false)
+
+function updateScrolled() {
+  scrolled.value = window.scrollY > 8
+}
 
 onMounted(async () => {
+  updateScrolled()
+  window.addEventListener('scroll', updateScrolled, { passive: true })
   await auth.init()
   signedIn.value = auth.isAuthenticated
 })
 
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateScrolled)
+})
 function closeMenu() {
   menuOpen.value = false
 }
@@ -47,70 +57,94 @@ async function goDashboard() {
 </script>
 
 <template>
-  <header class="mkt-nav-bar">
-    <RouterLink to="/" class="mkt-nav-brand" aria-label="Audivoice home" @click="closeMenu">
-      <img src="/logo.svg" alt="Audivoice" class="mkt-nav-logo" width="160" height="33" />
-    </RouterLink>
-
-    <nav class="mkt-nav-links" aria-label="Primary">
-      <RouterLink v-for="link in navLinks" :key="link.to" :to="link.to" class="mkt-nav-item">
-        {{ link.label }}
+  <header class="mkt-nav" :class="{ 'mkt-nav--scrolled': scrolled, 'mkt-nav--menu-open': menuOpen }">
+    <div class="mkt-nav-bar">
+      <RouterLink to="/" class="mkt-nav-brand" aria-label="Audivoice home" @click="closeMenu">
+        <img src="/logo.svg" alt="Audivoice" class="mkt-nav-logo" width="160" height="33" />
       </RouterLink>
-    </nav>
 
-    <div class="mkt-nav-actions">
-      <button
-        type="button"
-        class="mkt-nav-menu-btn"
-        :aria-expanded="menuOpen"
-        aria-controls="mkt-nav-mobile"
-        @click="menuOpen = !menuOpen"
+      <nav class="mkt-nav-links" aria-label="Primary">
+        <RouterLink v-for="link in navLinks" :key="link.to" :to="link.to" class="mkt-nav-item">
+          {{ link.label }}
+        </RouterLink>
+      </nav>
+
+      <div class="mkt-nav-actions">
+        <button
+          type="button"
+          class="mkt-nav-menu-btn"
+          :aria-expanded="menuOpen"
+          aria-controls="mkt-nav-mobile"
+          @click="menuOpen = !menuOpen"
+        >
+          Menu
+        </button>
+        <button v-if="signedIn" type="button" class="mkt-nav-auth" @click="goDashboard">
+          Dashboard
+        </button>
+        <button v-else type="button" class="mkt-nav-auth" @click="goSignIn">Log in</button>
+        <button type="button" class="mkt-nav-cta" @click="startCreateSession">
+          Get started <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <nav
+        id="mkt-nav-mobile"
+        class="mkt-nav-mobile"
+        :class="{ 'mkt-nav-mobile--open': menuOpen }"
+        aria-label="Mobile"
       >
-        Menu
-      </button>
-      <button v-if="signedIn" type="button" class="mkt-nav-auth" @click="goDashboard">
-        Dashboard
-      </button>
-      <button v-else type="button" class="mkt-nav-auth" @click="goSignIn">Log in</button>
-      <button type="button" class="mkt-nav-cta" @click="startCreateSession">
-        Get started <span aria-hidden="true">→</span>
-      </button>
+        <RouterLink
+          v-for="link in navLinks"
+          :key="link.to"
+          :to="link.to"
+          class="mkt-nav-mobile-link"
+          @click="closeMenu"
+        >
+          {{ link.label }}
+        </RouterLink>
+        <button v-if="signedIn" type="button" class="mkt-nav-mobile-link" @click="goDashboard">
+          Dashboard
+        </button>
+        <button v-else type="button" class="mkt-nav-mobile-link" @click="goSignIn">Log in</button>
+        <button type="button" class="mkt-nav-cta mkt-nav-mobile-cta" @click="startCreateSession">
+          Get started <span aria-hidden="true">→</span>
+        </button>
+      </nav>
     </div>
-
-    <nav
-      id="mkt-nav-mobile"
-      class="mkt-nav-mobile"
-      :class="{ 'mkt-nav-mobile--open': menuOpen }"
-      aria-label="Mobile"
-    >
-      <RouterLink
-        v-for="link in navLinks"
-        :key="link.to"
-        :to="link.to"
-        class="mkt-nav-mobile-link"
-        @click="closeMenu"
-      >
-        {{ link.label }}
-      </RouterLink>
-      <button v-if="signedIn" type="button" class="mkt-nav-mobile-link" @click="goDashboard">
-        Dashboard
-      </button>
-      <button v-else type="button" class="mkt-nav-mobile-link" @click="goSignIn">Log in</button>
-      <button type="button" class="mkt-nav-cta mkt-nav-mobile-cta" @click="startCreateSession">
-        Get started <span aria-hidden="true">→</span>
-      </button>
-    </nav>
   </header>
 </template>
 
 <style scoped>
-.mkt-nav-bar {
+.mkt-nav {
   --nav-ink: #0b1220;
   --nav-muted: #64748b;
   --nav-teal: #0f766e;
   --nav-teal-deep: #115e59;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.mkt-nav--scrolled,
+.mkt-nav--menu-open {
+  background: rgba(255, 255, 255, 0.78);
+  border-bottom-color: rgba(204, 232, 227, 0.85);
+  box-shadow: 0 8px 28px rgba(15, 39, 42, 0.06);
+}
+
+.mkt-nav-bar {
   position: relative;
-  z-index: 20;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -118,14 +152,14 @@ async function goDashboard() {
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 1rem 1.25rem 0.5rem;
+  padding: 0.85rem 1.25rem;
   box-sizing: border-box;
 }
 
 @media (min-width: 960px) {
   .mkt-nav-bar {
     grid-template-columns: auto 1fr auto;
-    padding: 1.35rem 1.25rem 0.75rem;
+    padding: 0.95rem 1.25rem;
   }
 }
 
@@ -295,6 +329,7 @@ async function goDashboard() {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .mkt-nav,
   .mkt-nav-cta {
     transition: none;
   }

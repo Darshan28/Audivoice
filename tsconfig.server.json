@@ -9,9 +9,8 @@
     "resolveJsonModule": true,
     "types": ["node"],
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["./shared/*"]
     }
   },
   "include": ["server/**/*.ts", "shared/**/*.ts", "api/**/*.ts", "prisma/seed.ts"]

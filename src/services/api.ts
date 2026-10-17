@@ -1,3 +1,9 @@
+import type {
+  AdminUserDTO,
+  ContactSubmissionDTO,
+  LoginAuditDTO,
+  LoginAuditMethod,
+} from '@shared/admin'
 import type { LiveResults, LiveState, QuestionDTO, SessionDTO } from '@shared/types'
 import type { UserProfileDTO } from '@shared/onboarding'
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase'
@@ -160,6 +166,40 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(body),
     })
+  },
+  submitContact(body: {
+    fullName: string
+    email: string
+    enquiryType: string
+    subject: string
+    message: string
+  }) {
+    return request<{ ok: boolean }>(
+      '/api/contact',
+      { method: 'POST', body: JSON.stringify(body) },
+      { auth: false },
+    )
+  },
+  recordLoginAudit(method?: LoginAuditMethod) {
+    return request<{ audit: LoginAuditDTO }>('/api/auth/login-audit', {
+      method: 'POST',
+      body: JSON.stringify(method ? { method } : {}),
+    })
+  },
+  adminListContacts(limit = 100, offset = 0) {
+    return request<{ contacts: ContactSubmissionDTO[] }>(
+      `/api/admin/contacts?limit=${limit}&offset=${offset}`,
+    )
+  },
+  adminListLoginAudits(options: { limit?: number; offset?: number; authUserId?: string } = {}) {
+    const params = new URLSearchParams()
+    params.set('limit', String(options.limit ?? 100))
+    params.set('offset', String(options.offset ?? 0))
+    if (options.authUserId) params.set('authUserId', options.authUserId)
+    return request<{ audits: LoginAuditDTO[] }>(`/api/admin/login-audits?${params}`)
+  },
+  adminListUsers(limit = 100, offset = 0) {
+    return request<{ users: AdminUserDTO[] }>(`/api/admin/users?limit=${limit}&offset=${offset}`)
   },
   createSession(title: string, description?: string) {
     return request<{ session: SessionDTO }>('/api/sessions', {

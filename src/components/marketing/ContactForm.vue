@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import { contactPage } from '@/content/marketing/contact'
+import { api, ApiClientError } from '@/services/api'
 
 const route = useRoute()
 const topicQuery = typeof route.query.topic === 'string' ? route.query.topic : ''
@@ -22,8 +23,9 @@ const message = ref('')
 const privacyAck = ref(false)
 const error = ref<string | null>(null)
 const sent = ref(false)
+const submitting = ref(false)
 
-function submit() {
+async function submit() {
   error.value = null
   if (!fullName.value.trim() || !email.value.includes('@') || !subject.value.trim() || !message.value.trim()) {
     error.value = 'Please fill in all required fields.'
@@ -33,18 +35,32 @@ function submit() {
     error.value = 'Please acknowledge the privacy notice to continue.'
     return
   }
-  const body = [
-    `Name: ${fullName.value.trim()}`,
-    `Email: ${email.value.trim()}`,
-    `Enquiry: ${enquiryType.value}`,
-    '',
-    message.value.trim(),
-  ].join('\n')
-  const href = `mailto:${contactPage.mailto}?subject=${encodeURIComponent(
-    `[Audivoice] ${subject.value.trim()}`,
-  )}&body=${encodeURIComponent(body)}`
-  window.location.href = href
-  sent.value = true
+
+  submitting.value = true
+  try {
+    await api.submitContact({
+      fullName: fullName.value.trim(),
+      email: email.value.trim(),
+      enquiryType: enquiryType.value,
+      subject: subject.value.trim(),
+      message: message.value.trim(),
+    })
+    sent.value = true
+    fullName.value = ''
+    email.value = ''
+    subject.value = ''
+    message.value = ''
+    privacyAck.value = false
+    enquiryType.value = contactPage.enquiryTypes[0]
+  } catch (e) {
+    if (e instanceof ApiClientError) {
+      error.value = e.message
+    } else {
+      error.value = 'Could not send your message. Please try again.'
+    }
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -73,8 +89,10 @@ function submit() {
     </label>
     <p v-if="error" class="text-sm text-audivoice-danger" role="alert">{{ error }}</p>
     <p v-if="sent" class="text-sm text-audivoice-success">
-      Your email client should open with the message ready to send.
+      Thanks — we received your message and will get back to you soon.
     </p>
-    <Button type="submit">Send Message</Button>
+    <Button type="submit" :disabled="submitting">
+      {{ submitting ? 'Sending…' : 'Send Message' }}
+    </Button>
   </form>
 </template>

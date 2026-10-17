@@ -8,8 +8,14 @@ import { AppError } from '../lib/errors.js'
 import { getStore } from '../store/index.js'
 import type { UpdateUserProfileInput, UserProfileRecord } from '../store/types.js'
 
-export function toProfileDTO(profile: UserProfileRecord): UserProfileDTO {
-  return { ...profile }
+export function toProfileDTO(
+  profile: UserProfileRecord,
+  options: { isAdmin?: boolean } = {},
+): UserProfileDTO {
+  return {
+    ...profile,
+    isAdmin: Boolean(options.isAdmin),
+  }
 }
 
 export async function ensurePresenterProfile(input: {

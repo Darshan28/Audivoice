@@ -26,7 +26,7 @@ onMounted(async () => {
       return
     }
 
-    const created = await api.createSession('Demo: Feel the room', 'Multi-pane demo session')
+    const created = await api.createSession('Demo: Audivoice', 'Multi-pane demo session')
     const sessionId = created.session.id
     await api.createQuestion(sessionId, {
       type: 'MULTIPLE_CHOICE',

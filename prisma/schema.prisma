@@ -127,3 +127,30 @@ model ResponseAnswer {
   key        String
   value      Json
 }
+
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  fullName    String
+  email       String
+  enquiryType String
+  subject     String
+  message     String
+  userAgent   String?
+  ip          String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model LoginAudit {
+  id         String   @id @default(cuid())
+  authUserId String
+  email      String?
+  method     String
+  userAgent  String?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([authUserId])
+}

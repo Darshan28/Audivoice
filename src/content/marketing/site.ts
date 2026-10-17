@@ -1,12 +1,14 @@
-export const SITE_ORIGIN = 'https://audivoice.com'
+/** Preferred host — production redirects apex → www. */
+export const SITE_ORIGIN = 'https://www.audivoice.com'
 export const SITE_NAME = 'Audivoice'
 export const SITE_TAGLINE = 'Give every audience a voice.'
+export const SITE_OG_IMAGE = `${SITE_ORIGIN}/og-image.png`
 
 export const navLinks = [
   { label: 'Features', to: '/features/' },
   { label: 'Use Cases', to: '/use-cases/' },
   { label: 'Pricing', to: '/pricing/' },
-  { label: 'Resources', to: '/resources/' },
+  { label: 'Blogs', to: '/blogs/' },
   { label: 'About', to: '/about/' },
 ] as const
 
@@ -39,7 +41,7 @@ export const footerColumns = [
       { label: 'About', to: '/about/' },
       { label: 'Contact', to: '/contact/' },
       { label: 'Help Center', to: '/help/' },
-      { label: 'Resources', to: '/resources/' },
+      { label: 'Blogs', to: '/blogs/' },
     ],
   },
   {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import MarketingNav from '@/components/marketing/MarketingNav.vue'
 import { setAuthIntent } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -45,8 +44,6 @@ async function startCreateSession() {
         </defs>
       </svg>
     </div>
-
-    <MarketingNav />
 
     <main class="landing-hero">
       <div class="landing-copy landing-fade">
@@ -202,7 +199,8 @@ async function startCreateSession() {
   gap: 1.75rem;
   width: 100%;
   min-height: 0;
-  padding: 0.75rem 1.25rem 1.5rem;
+  /* Top padding clears the fixed glass nav from MarketingLayout */
+  padding: 5.25rem 1.25rem 1.5rem;
   grid-template-columns: 1fr;
 }
 
@@ -211,7 +209,7 @@ async function startCreateSession() {
     grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
     gap: clamp(2.5rem, 5vw, 5.5rem);
     /* Left aligns with 1120px layout; no right padding so stage stays full-bleed */
-    padding-top: clamp(0.5rem, 1.5vh, 1.25rem);
+    padding-top: 5.5rem;
     padding-right: 0;
     padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
     padding-left: max(1.25rem, calc((100% - 1120px) / 2 + 1.25rem));
@@ -264,6 +262,7 @@ async function startCreateSession() {
 
 .landing-title-accent {
   display: inline;
+  white-space: nowrap;
   background: none;
   color: var(--teal-deep);
   font-weight: 700;
@@ -431,14 +430,10 @@ async function startCreateSession() {
 }
 
 @media (max-width: 959px) {
-  .landing-header {
-    padding-bottom: 0.25rem;
-  }
-
   .landing-hero {
     align-content: center;
     justify-items: center;
-    padding-top: 1.5rem;
+    padding-top: 5rem;
     text-align: left;
   }
 
@@ -465,12 +460,6 @@ async function startCreateSession() {
 
   .landing-btn-hero {
     width: 100%;
-  }
-
-  .landing-nav .landing-btn-primary {
-    min-height: 2.5rem;
-    padding: 0.55rem 0.95rem;
-    font-size: 0.875rem;
   }
 
   .landing-features {

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import MarketingHero from '@/components/marketing/MarketingHero.vue'
-import { articles, resourcesPage, resourcesSeo } from '@/content/marketing/resources'
+import { articles, blogsPage, blogsSeo } from '@/content/marketing/blogs'
 import { usePageSeo } from '@/composables/usePageSeo'
 
-usePageSeo(resourcesSeo)
+usePageSeo(blogsSeo)
 </script>
 
 <template>
   <div>
     <MarketingHero
-      eyebrow="Resources"
-      :title="resourcesPage.h1"
-      :body="resourcesPage.intro"
+      eyebrow="Blogs"
+      :title="blogsPage.h1"
+      :body="blogsPage.intro"
       wide
     />
 

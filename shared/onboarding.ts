@@ -32,4 +32,6 @@ export interface UserProfileDTO {
   onboardingCompleted: boolean
   createdAt: string
   updatedAt: string
+  /** Derived server-side from ADMIN_EMAIL; not stored in DB. */
+  isAdmin?: boolean
 }

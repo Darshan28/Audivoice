@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import FinalCta from '@/components/marketing/FinalCta.vue'
 import MarketingHero from '@/components/marketing/MarketingHero.vue'
 import { startForFreeTo } from '@/content/marketing/site'
-import { getArticleBySlug } from '@/content/marketing/resources'
+import { getArticleBySlug } from '@/content/marketing/blogs'
 import { usePageSeo } from '@/composables/usePageSeo'
 
 const route = useRoute()
@@ -23,7 +23,7 @@ watchEffect(() => {
 
 <template>
   <div v-if="page">
-    <MarketingHero eyebrow="Resource" :title="page.h1" :body="page.intro" wide />
+    <MarketingHero eyebrow="Blog" :title="page.h1" :body="page.intro" wide />
 
     <section class="mkt-section mkt-prose">
       <h2 class="mkt-h2">{{ page.richer ? 'A practical approach' : 'Key points' }}</h2>
@@ -34,7 +34,7 @@ watchEffect(() => {
       </div>
       <p class="mkt-note">
         This is a practical outline. Full guidance will expand over time.
-        <RouterLink to="/resources/" class="underline">Browse more resources</RouterLink>.
+        <RouterLink to="/blogs/" class="underline">Browse more articles</RouterLink>.
       </p>
     </section>
 
@@ -48,6 +48,6 @@ watchEffect(() => {
   </div>
   <div v-else class="mkt-section">
     <h1 class="mkt-h1">Article not found</h1>
-    <RouterLink class="btn-secondary" to="/resources/">Back to Resources</RouterLink>
+    <RouterLink class="btn-secondary" to="/blogs/">Back to Blogs</RouterLink>
   </div>
 </template>

@@ -1,13 +1,13 @@
 import type { ArticleStub } from './types'
 
-export const resourcesSeo = {
-  title: 'Audience Feedback & Engagement Resources | Audivoice',
+export const blogsSeo = {
+  title: 'Audience Feedback & Engagement Blogs | Audivoice',
   description:
     'Explore practical ideas for design reviews, product feedback, interactive meetings, classroom engagement, workshops, and events.',
-  path: '/resources/',
+  path: '/blogs/',
 }
 
-export const resourcesPage = {
+export const blogsPage = {
   h1: 'Ideas for Better Feedback and More Engaging Sessions.',
   intro:
     'Explore practical questions, activity ideas, and guides to help teams and audiences participate.',
@@ -16,7 +16,7 @@ export const resourcesPage = {
 export const articles: ArticleStub[] = [
   {
     slug: 'how-to-run-a-better-design-review',
-    path: '/resources/how-to-run-a-better-design-review/',
+    path: '/blogs/how-to-run-a-better-design-review/',
     title: 'Design Reviews: How to Collect Useful Feedback',
     description:
       'Learn how to structure a design review, invite useful feedback, and gather opinions from colleagues and stakeholders.',
@@ -35,7 +35,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'questions-to-ask-during-a-design-review',
-    path: '/resources/questions-to-ask-during-a-design-review/',
+    path: '/blogs/questions-to-ask-during-a-design-review/',
     title: 'Questions to Ask During a Design Review | Audivoice',
     description: 'Practical question prompts to guide useful feedback in design review sessions.',
     h1: 'Questions to Ask During a Design Review',
@@ -49,7 +49,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-collect-feedback-on-design-concepts',
-    path: '/resources/how-to-collect-feedback-on-design-concepts/',
+    path: '/blogs/how-to-collect-feedback-on-design-concepts/',
     title: 'How to Collect Feedback on Design Concepts | Audivoice',
     description: 'Ways to gather structured opinions on design concepts from teams and stakeholders.',
     h1: 'How to Collect Feedback on Design Concepts',
@@ -62,7 +62,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-gather-stakeholder-feedback-on-a-new-feature',
-    path: '/resources/how-to-gather-stakeholder-feedback-on-a-new-feature/',
+    path: '/blogs/how-to-gather-stakeholder-feedback-on-a-new-feature/',
     title: 'How to Gather Stakeholder Feedback on a New Feature | Audivoice',
     description: 'Invite stakeholders to share opinions and questions during feature demos and reviews.',
     h1: 'How to Gather Stakeholder Feedback on a New Feature',
@@ -75,7 +75,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'live-poll-questions-for-team-meetings',
-    path: '/resources/live-poll-questions-for-team-meetings/',
+    path: '/blogs/live-poll-questions-for-team-meetings/',
     title: 'Live Poll Questions for Team Meetings | Audivoice',
     description: 'Ready-to-use live poll prompts that make team meetings more participatory.',
     h1: 'Live Poll Questions for Team Meetings',
@@ -88,7 +88,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-run-an-interactive-product-demo',
-    path: '/resources/how-to-run-an-interactive-product-demo/',
+    path: '/blogs/how-to-run-an-interactive-product-demo/',
     title: 'How to Run an Interactive Product Demo | Audivoice',
     description: 'Make product demos more engaging with questions, polls, and structured feedback.',
     h1: 'How to Run an Interactive Product Demo',
@@ -101,7 +101,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-make-team-meetings-more-participatory',
-    path: '/resources/how-to-make-team-meetings-more-participatory/',
+    path: '/blogs/how-to-make-team-meetings-more-participatory/',
     title: 'How to Make Team Meetings More Participatory | Audivoice',
     description: 'Practical ways to invite more voices into team meetings and planning sessions.',
     h1: 'How to Make Team Meetings More Participatory',
@@ -114,7 +114,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: '25-interactive-presentation-ideas',
-    path: '/resources/25-interactive-presentation-ideas/',
+    path: '/blogs/25-interactive-presentation-ideas/',
     title: '25 Interactive Presentation Ideas to Engage Your Audience | Audivoice',
     description: 'Presentation ideas that use polls, Q&A, quizzes, and feedback activities.',
     h1: '25 Interactive Presentation Ideas to Engage Your Audience',
@@ -127,7 +127,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: '30-icebreaker-questions-for-team-meetings',
-    path: '/resources/30-icebreaker-questions-for-team-meetings/',
+    path: '/blogs/30-icebreaker-questions-for-team-meetings/',
     title: '30 Icebreaker Questions for Team Meetings | Audivoice',
     description: 'Icebreaker prompts you can run as live polls or quick questions in team sessions.',
     h1: '30 Icebreaker Questions for Team Meetings',
@@ -140,7 +140,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-make-classroom-lessons-more-interactive',
-    path: '/resources/how-to-make-classroom-lessons-more-interactive/',
+    path: '/blogs/how-to-make-classroom-lessons-more-interactive/',
     title: 'How to Make Classroom Lessons More Interactive | Audivoice',
     description: 'Ideas for using polls, quizzes, and Q&A to increase classroom participation.',
     h1: 'How to Make Classroom Lessons More Interactive',
@@ -153,7 +153,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'how-to-collect-feedback-after-a-workshop',
-    path: '/resources/how-to-collect-feedback-after-a-workshop/',
+    path: '/blogs/how-to-collect-feedback-after-a-workshop/',
     title: 'How to Collect Feedback After a Workshop | Audivoice',
     description: 'Collect useful post-workshop feedback with surveys, ratings, and open questions.',
     h1: 'How to Collect Feedback After a Workshop',
@@ -166,7 +166,7 @@ export const articles: ArticleStub[] = [
   },
   {
     slug: 'live-polls-vs-surveys',
-    path: '/resources/live-polls-vs-surveys/',
+    path: '/blogs/live-polls-vs-surveys/',
     title: 'Live Polls vs. Surveys: When Should You Use Each? | Audivoice',
     description: 'Learn when live polls or surveys are the better fit for feedback and engagement.',
     h1: 'Live Polls vs. Surveys: When Should You Use Each?',

@@ -97,16 +97,22 @@ const router = createRouter({
           meta: marketingMeta,
         },
         {
-          path: 'resources/',
-          name: 'resources',
-          component: () => import('@/views/marketing/ResourcesView.vue'),
+          path: 'blogs/',
+          name: 'blogs',
+          component: () => import('@/views/marketing/BlogsView.vue'),
           meta: marketingMeta,
         },
         {
-          path: 'resources/:slug/',
-          name: 'resource-article',
+          path: 'blogs/:slug/',
+          name: 'blog-article',
           component: () => import('@/views/marketing/ArticleStubView.vue'),
           meta: marketingMeta,
+        },
+        // Legacy /resources → /blogs
+        { path: 'resources/', redirect: '/blogs/' },
+        {
+          path: 'resources/:slug/',
+          redirect: (to) => `/blogs/${to.params.slug}/`,
         },
         {
           path: 'privacy/',
@@ -131,7 +137,8 @@ const router = createRouter({
         },
         // Slashless nested redirects for dynamic segments
         { path: 'use-cases/:slug', redirect: (to) => `/use-cases/${to.params.slug}/` },
-        { path: 'resources/:slug', redirect: (to) => `/resources/${to.params.slug}/` },
+        { path: 'blogs/:slug', redirect: (to) => `/blogs/${to.params.slug}/` },
+        { path: 'resources/:slug', redirect: (to) => `/blogs/${to.params.slug}/` },
       ],
     },
     // Trailing-slash redirects for marketing paths without slash
@@ -146,7 +153,8 @@ const router = createRouter({
     { path: '/about', redirect: '/about/' },
     { path: '/contact', redirect: '/contact/' },
     { path: '/help', redirect: '/help/' },
-    { path: '/resources', redirect: '/resources/' },
+    { path: '/blogs', redirect: '/blogs/' },
+    { path: '/resources', redirect: '/blogs/' },
     { path: '/privacy', redirect: '/privacy/' },
     { path: '/terms', redirect: '/terms/' },
     { path: '/cookies', redirect: '/cookies/' },
@@ -225,6 +233,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/app/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true, skipOnboardingGate: true },
+    },
+    {
       path: '/participant/:sessionId',
       name: 'participant',
       component: () => import('@/views/ParticipantView.vue'),
@@ -276,6 +290,24 @@ router.beforeEach(async (to) => {
     !auth.onboardingCompleted
   ) {
     return { path: '/onboarding', query: { next: safeAppPath(to.fullPath) } }
+  }
+
+  if (to.meta.requiresAdmin) {
+    if (!auth.isAuthenticated) {
+      const next = safeAppPath(to.fullPath)
+      setAuthIntent(next)
+      return { path: '/auth', query: { next } }
+    }
+    if (auth.profileStatus !== 'ready') {
+      try {
+        await auth.refreshProfile()
+      } catch {
+        return { path: '/app/sessions' }
+      }
+    }
+    if (!auth.isAdmin) {
+      return { path: '/app/sessions' }
+    }
   }
 
   if (to.meta.guest && auth.isAuthenticated && to.name === 'auth') {

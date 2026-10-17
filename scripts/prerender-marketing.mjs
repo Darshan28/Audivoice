@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const distDir = join(__dirname, '..', 'dist')
-const origin = 'https://audivoice.com'
+const origin = 'https://www.audivoice.com'
+const ogImage = `${origin}/og-image.png`
 
 const pages = [
   {
@@ -115,8 +116,8 @@ const pages = [
       'Find help using Audivoice, including creating sessions, joining activities, sharing session access, and using available features.',
   },
   {
-    path: '/resources/',
-    title: 'Audience Feedback & Engagement Resources | Audivoice',
+    path: '/blogs/',
+    title: 'Audience Feedback & Engagement Blogs | Audivoice',
     description:
       'Explore practical ideas for design reviews, product feedback, interactive meetings, classroom engagement, workshops, and events.',
   },
@@ -151,7 +152,7 @@ const articlePages = [
   ['how-to-collect-feedback-after-a-workshop', 'How to Collect Feedback After a Workshop | Audivoice', 'Collect useful post-workshop feedback with surveys, ratings, and open questions.'],
   ['live-polls-vs-surveys', 'Live Polls vs. Surveys: When Should You Use Each? | Audivoice', 'Learn when live polls or surveys are the better fit for feedback and engagement.'],
 ].map(([slug, title, description]) => ({
-  path: `/resources/${slug}/`,
+  path: `/blogs/${slug}/`,
   title,
   description,
 }))
@@ -159,28 +160,47 @@ const articlePages = [
 const allPages = [...pages, ...articlePages]
 const template = readFileSync(join(distDir, 'index.html'), 'utf8')
 
+function setMeta(html, attr, key, content) {
+  const re = new RegExp(`<meta\\s+${attr}="${key}"\\s+content="[^"]*"\\s*/?>`, 'i')
+  const tag = `<meta ${attr}="${key}" content="${escapeAttr(content)}" />`
+  if (re.test(html)) return html.replace(re, tag)
+  return html.replace('</head>', `    ${tag}\n  </head>`)
+}
+
+function setLink(html, rel, href) {
+  const re = new RegExp(`<link\\s+rel="${rel}"\\s+href="[^"]*"\\s*/?>`, 'i')
+  const tag = `<link rel="${rel}" href="${escapeAttr(href)}" />`
+  if (re.test(html)) return html.replace(re, tag)
+  return html.replace('</head>', `    ${tag}\n  </head>`)
+}
+
 function inject(html, { path, title, description }) {
   const url = `${origin}${path === '/' ? '/' : path}`
   let out = html
   out = out.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(title)}</title>`)
-  if (out.includes('name="description"')) {
-    out = out.replace(
-      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/,
-      `<meta name="description" content="${escapeAttr(description)}" />`,
-    )
-  } else {
-    out = out.replace(
-      '</title>',
-      `</title>\n    <meta name="description" content="${escapeAttr(description)}" />`,
-    )
+  out = setMeta(out, 'name', 'description', description)
+  out = setLink(out, 'canonical', url)
+  out = setMeta(out, 'property', 'og:title', title)
+  out = setMeta(out, 'property', 'og:description', description)
+  out = setMeta(out, 'property', 'og:url', url)
+  out = setMeta(out, 'property', 'og:image', ogImage)
+  out = setMeta(out, 'name', 'twitter:title', title)
+  out = setMeta(out, 'name', 'twitter:description', description)
+  out = setMeta(out, 'name', 'twitter:image', ogImage)
+
+  const webpageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    isPartOf: { '@id': `${origin}/#website` },
+    about: { '@id': `${origin}/#organization` },
   }
-  const headExtras = `
-    <link rel="canonical" href="${url}" />
-    <meta property="og:title" content="${escapeAttr(title)}" />
-    <meta property="og:description" content="${escapeAttr(description)}" />
-    <meta property="og:url" content="${url}" />
-  `
-  out = out.replace('</head>', `${headExtras}</head>`)
+  const ldTag = `<script type="application/ld+json">${JSON.stringify(webpageLd)}</script>`
+  // Keep Organization/WebSite from the template; append page-level WebPage.
+  out = out.replace('</head>', `    ${ldTag}\n  </head>`)
   return out
 }
 

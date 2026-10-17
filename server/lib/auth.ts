@@ -1,4 +1,5 @@
 import type { Context } from 'hono'
+import { isAdminEmail } from '../../shared/admin.js'
 import { AppError } from './errors.js'
 import { isDevAccessToken, verifyDevAccessToken } from './devAuth.js'
 import { getSupabaseAuthClient, isSupabaseConfigured } from './supabase.js'
@@ -64,6 +65,46 @@ export async function tryResolvePresenter(
   } catch {
     return null
   }
+}
+
+async function isGoogleAdminToken(accessToken: string, email: string | null): Promise<boolean> {
+  if (!isAdminEmail(email)) return false
+  if (isDevAccessToken(accessToken)) return false
+  if (!isSupabaseConfigured()) return false
+  const supabase = getSupabaseAuthClient()
+  const { data, error } = await supabase.auth.getUser(accessToken)
+  if (error || !data.user) return false
+  const provider = String(data.user.app_metadata?.provider || '').toLowerCase()
+  return provider === 'google' && isAdminEmail(data.user.email)
+}
+
+/** Platform admin — Google sign-in as support@audivoice.com only. */
+export async function requireAdmin(c: Context): Promise<UserProfileRecord> {
+  const accessToken = extractBearerToken(c)
+  if (!accessToken) {
+    throw new AppError('UNAUTHORIZED', 'Sign in to continue.', 401)
+  }
+  const user = await profileFromAccessToken(accessToken)
+  if (!(await isGoogleAdminToken(accessToken, user.email))) {
+    throw new AppError('FORBIDDEN', 'Admin access required.', 403)
+  }
+  return user
+}
+
+/** Whether the current bearer token is the Google admin account. */
+export async function resolveIsAdmin(c: Context, email: string | null): Promise<boolean> {
+  const accessToken = extractBearerToken(c)
+  if (!accessToken) return false
+  return isGoogleAdminToken(accessToken, email)
+}
+
+export function clientIp(c: Context): string | null {
+  const forwarded = c.req.header('x-forwarded-for')
+  if (forwarded) {
+    const first = forwarded.split(',')[0]?.trim()
+    if (first) return first
+  }
+  return c.req.header('x-real-ip')?.trim() || null
 }
 
 export function getParticipantToken(c: Context) {

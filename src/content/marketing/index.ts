@@ -7,7 +7,7 @@ export * from './pricing'
 export * from './about'
 export * from './contact'
 export * from './help'
-export * from './resources'
+export * from './blogs'
 export * from './legal'
 
 import { homeSeo } from './home'
@@ -17,7 +17,7 @@ import { pricingSeo } from './pricing'
 import { aboutSeo } from './about'
 import { contactSeo } from './contact'
 import { helpSeo } from './help'
-import { resourcesSeo, articles } from './resources'
+import { blogsSeo, articles } from './blogs'
 import { legalPages } from './legal'
 
 /** All public marketing paths for sitemap / prerender. */
@@ -31,7 +31,7 @@ export const marketingPaths = [
   aboutSeo.path,
   contactSeo.path,
   helpSeo.path,
-  resourcesSeo.path,
+  blogsSeo.path,
   ...articles.map((a) => a.path),
   ...legalPages.map((p) => p.path),
 ]
@@ -46,7 +46,7 @@ export const marketingSeoEntries = [
   aboutSeo,
   contactSeo,
   helpSeo,
-  resourcesSeo,
+  blogsSeo,
   ...articles,
   ...legalPages.map((p) => ({
     title: p.title,

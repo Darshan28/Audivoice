@@ -3,7 +3,13 @@ import { cors } from 'hono/cors'
 import { streamSSE } from 'hono/streaming'
 import { z } from 'zod'
 import { toErrorBody, AppError } from './lib/errors.js'
-import { getParticipantToken, resolvePresenter } from './lib/auth.js'
+import {
+  clientIp,
+  getParticipantToken,
+  requireAdmin,
+  resolveIsAdmin,
+  resolvePresenter,
+} from './lib/auth.js'
 import { getPublicAppUrl, resolveCorsOrigin } from './lib/cors.js'
 import {
   assertDevLoginRequest,
@@ -47,6 +53,14 @@ import {
 import type { QuestionType } from '../shared/types.js'
 import QRCode from 'qrcode'
 import { rateLimit } from './lib/rateLimit.js'
+import {
+  listAdminUsers,
+  listContacts,
+  listLoginAudits,
+  normalizeLoginMethod,
+  recordLoginAudit,
+  submitContact,
+} from './services/adminService.js'
 
 export type AppEnv = {
   Variables: {
@@ -85,7 +99,8 @@ export function createApp() {
 
   app.get('/api/me', async (c) => {
     const user = await resolvePresenter(c)
-    return c.json({ profile: toProfileDTO(user) })
+    const isAdmin = await resolveIsAdmin(c, user.email)
+    return c.json({ profile: toProfileDTO(user, { isAdmin }) })
   })
 
   app.patch('/api/me', async (c) => {
@@ -98,7 +113,8 @@ export function createApp() {
       })
       .parse(await c.req.json())
     const profile = await updatePresenterProfile(user.id, body)
-    return c.json({ profile: toProfileDTO(profile) })
+    const isAdmin = await resolveIsAdmin(c, profile.email)
+    return c.json({ profile: toProfileDTO(profile, { isAdmin }) })
   })
 
   app.post('/api/me/onboarding', async (c) => {
@@ -111,7 +127,72 @@ export function createApp() {
       })
       .parse(await c.req.json())
     const profile = await completeOnboarding(user.id, body)
-    return c.json({ profile: toProfileDTO(profile) })
+    const isAdmin = await resolveIsAdmin(c, profile.email)
+    return c.json({ profile: toProfileDTO(profile, { isAdmin }) })
+  })
+
+  app.post('/api/contact', async (c) => {
+    const ip = clientIp(c) || 'local'
+    if (!rateLimit(`contact:${ip}`, 8, 60_000)) {
+      throw new AppError('RATE_LIMITED', 'Too many messages. Please wait a moment.', 429)
+    }
+    const body = z
+      .object({
+        fullName: z.string().trim().min(1).max(120),
+        email: z.string().trim().email().max(200),
+        enquiryType: z.string().trim().min(1).max(80),
+        subject: z.string().trim().min(1).max(200),
+        message: z.string().trim().min(1).max(5000),
+      })
+      .parse(await c.req.json())
+    await submitContact({
+      ...body,
+      userAgent: c.req.header('user-agent')?.slice(0, 500) ?? null,
+      ip,
+    })
+    return c.json({ ok: true }, 201)
+  })
+
+  app.post('/api/auth/login-audit', async (c) => {
+    const user = await resolvePresenter(c)
+    const body = z
+      .object({
+        method: z.enum(['google', 'magic_link', 'dev']).optional(),
+      })
+      .parse(await c.req.json().catch(() => ({})))
+    const audit = await recordLoginAudit({
+      authUserId: user.authUserId,
+      email: user.email,
+      method: body.method ?? normalizeLoginMethod(null),
+      userAgent: c.req.header('user-agent')?.slice(0, 500) ?? null,
+      ip: clientIp(c),
+    })
+    return c.json({ audit }, 201)
+  })
+
+  app.get('/api/admin/contacts', async (c) => {
+    await requireAdmin(c)
+    const limit = Number(c.req.query('limit') || 100)
+    const offset = Number(c.req.query('offset') || 0)
+    const contacts = await listContacts(limit, offset)
+    return c.json({ contacts })
+  })
+
+  app.get('/api/admin/login-audits', async (c) => {
+    await requireAdmin(c)
+    const limit = Number(c.req.query('limit') || 100)
+    const offset = Number(c.req.query('offset') || 0)
+    const authUserId = c.req.query('authUserId') || undefined
+    const audits = await listLoginAudits({ limit, offset, authUserId })
+    return c.json({ audits })
+  })
+
+  app.get('/api/admin/users', async (c) => {
+    await requireAdmin(c)
+    const limit = Number(c.req.query('limit') || 100)
+    const offset = Number(c.req.query('offset') || 0)
+    const users = await listAdminUsers(limit, offset)
+    return c.json({ users })
   })
 
   app.post('/api/sessions', async (c) => {

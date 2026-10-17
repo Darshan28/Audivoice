@@ -6,8 +6,35 @@ import type {
   SessionStatus,
 } from '../../shared/types.js'
 import type { UserProfileDTO } from '../../shared/onboarding.js'
+import type { ContactSubmissionDTO, LoginAuditDTO, LoginAuditMethod } from '../../shared/admin.js'
 
-export type UserProfileRecord = UserProfileDTO
+export type UserProfileRecord = Omit<UserProfileDTO, 'isAdmin'>
+
+export type ContactSubmissionRecord = ContactSubmissionDTO
+export type LoginAuditRecord = LoginAuditDTO
+
+export interface CreateContactSubmissionInput {
+  fullName: string
+  email: string
+  enquiryType: string
+  subject: string
+  message: string
+  userAgent?: string | null
+  ip?: string | null
+}
+
+export interface CreateLoginAuditInput {
+  authUserId: string
+  email?: string | null
+  method: LoginAuditMethod
+  userAgent?: string | null
+  ip?: string | null
+}
+
+export interface ListOptions {
+  limit?: number
+  offset?: number
+}
 
 export interface SessionRecord {
   id: string
@@ -108,4 +135,13 @@ export interface Store {
   listResponsesForQuestion(questionId: string): Promise<ResponseRecord[]>
   deleteResponsesForQuestion(questionId: string): Promise<number>
   countResponsesForQuestion(questionId: string): Promise<number>
+
+  createContactSubmission(input: CreateContactSubmissionInput): Promise<ContactSubmissionRecord>
+  listContactSubmissions(options?: ListOptions): Promise<ContactSubmissionRecord[]>
+
+  createLoginAudit(input: CreateLoginAuditInput): Promise<LoginAuditRecord>
+  listLoginAudits(options?: ListOptions & { authUserId?: string }): Promise<LoginAuditRecord[]>
+
+  listUserProfiles(options?: ListOptions): Promise<UserProfileRecord[]>
+  countLoginAuditsByAuthUserIds(authUserIds: string[]): Promise<Map<string, { count: number; lastLoginAt: string | null }>>
 }

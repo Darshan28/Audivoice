@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const origin = 'https://audivoice.com'
+const origin = 'https://www.audivoice.com'
 
 const featureSlugs = ['live-polls', 'qa', 'quizzes', 'surveys', 'ratings']
 const useCaseSlugs = [
@@ -38,8 +38,8 @@ const paths = [
   '/about/',
   '/contact/',
   '/help/',
-  '/resources/',
-  ...articleSlugs.map((s) => `/resources/${s}/`),
+  '/blogs/',
+  ...articleSlugs.map((s) => `/blogs/${s}/`),
   '/privacy/',
   '/terms/',
   '/cookies/',

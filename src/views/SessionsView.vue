@@ -36,6 +36,13 @@ function formatDate(iso: string) {
       <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-4 sm:px-6">
         <BrandMark />
         <div class="flex flex-wrap items-center gap-2">
+          <Button
+            v-if="auth.isAdmin"
+            variant="ghost"
+            @click="router.push('/app/admin')"
+          >
+            Admin
+          </Button>
           <Button variant="ghost" @click="router.push('/app/settings')">Settings</Button>
           <Button variant="secondary" @click="logout">Log out</Button>
           <Button @click="router.push('/app/sessions/new')">
