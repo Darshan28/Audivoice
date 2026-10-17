@@ -16,9 +16,9 @@ const distribution = computed(
 <template>
   <div class="text-center space-y-6">
     <div>
-      <p :class="large ? 'text-6xl' : 'text-4xl'" class="font-extrabold text-pulse-purple tabular-nums">
+      <p :class="large ? 'text-6xl' : 'text-4xl'" class="font-extrabold text-audivoice-purple tabular-nums">
         {{ average }}
-        <span class="text-pulse-muted text-2xl font-semibold">/ {{ max }}</span>
+        <span class="text-audivoice-muted text-2xl font-semibold">/ {{ max }}</span>
       </p>
     </div>
     <div class="space-y-2 max-w-md mx-auto text-left">
@@ -26,13 +26,13 @@ const distribution = computed(
         <span class="w-6 tabular-nums font-medium">{{ d.value }}</span>
         <div class="flex-1 h-2.5 rounded-full bg-black/5 overflow-hidden">
           <div
-            class="h-full rounded-full bg-pulse-magenta transition-all duration-700"
+            class="h-full rounded-full bg-audivoice-magenta transition-all duration-700"
             :style="{ width: `${d.percent}%` }"
           />
         </div>
-        <span class="w-10 text-right text-pulse-muted tabular-nums">{{ d.percent }}%</span>
+        <span class="w-10 text-right text-audivoice-muted tabular-nums">{{ d.percent }}%</span>
       </div>
     </div>
-    <p class="text-sm text-pulse-muted">{{ results.responseCount }} responses</p>
+    <p class="text-sm text-audivoice-muted">{{ results.responseCount }} responses</p>
   </div>
 </template>

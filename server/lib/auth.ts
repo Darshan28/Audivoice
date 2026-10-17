@@ -5,7 +5,8 @@ import { getSupabaseAuthClient, isSupabaseConfigured } from './supabase.js'
 import { ensurePresenterProfile } from '../services/profileService.js'
 import type { UserProfileRecord } from '../store/types.js'
 
-export const PARTICIPANT_HEADER = 'x-pulse-participant'
+export const PARTICIPANT_HEADER = 'x-audivoice-participant'
+const PARTICIPANT_HEADER_LEGACY = 'x-pulse-participant'
 
 export function extractBearerToken(c: Context): string | null {
   const header = c.req.header('authorization') || c.req.header('Authorization')
@@ -66,5 +67,5 @@ export async function tryResolvePresenter(
 }
 
 export function getParticipantToken(c: Context) {
-  return c.req.header(PARTICIPANT_HEADER) ?? null
+  return c.req.header(PARTICIPANT_HEADER) ?? c.req.header(PARTICIPANT_HEADER_LEGACY) ?? null
 }

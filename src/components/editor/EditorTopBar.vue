@@ -82,7 +82,7 @@ defineEmits<{
   gap: 0.75rem;
   min-height: 3.5rem;
   padding: 0.5rem 0.85rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--pulse-border) 80%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--audivoice-border) 80%, transparent);
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
 }
@@ -101,13 +101,13 @@ defineEmits<{
   width: 2rem;
   height: 2rem;
   border-radius: 0.55rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   transition: background 0.15s, color 0.15s;
 }
 
 .editor-topbar__back:hover {
-  background: var(--pulse-soft);
-  color: var(--pulse-ink);
+  background: var(--audivoice-soft);
+  color: var(--audivoice-ink);
 }
 
 .editor-topbar__title {
@@ -123,7 +123,7 @@ defineEmits<{
 .editor-topbar__crumb {
   margin: 0.1rem 0 0;
   font-size: 0.7rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,7 +131,7 @@ defineEmits<{
 
 .editor-topbar__code {
   font-weight: 600;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
   letter-spacing: 0.04em;
 }
 
@@ -141,8 +141,8 @@ defineEmits<{
   gap: 0.15rem;
   padding: 0.2rem;
   border-radius: 999px;
-  background: var(--pulse-bg);
-  border: 1px solid color-mix(in srgb, var(--pulse-border) 70%, transparent);
+  background: var(--audivoice-bg);
+  border: 1px solid color-mix(in srgb, var(--audivoice-border) 70%, transparent);
 }
 
 .editor-topbar__tab {
@@ -152,14 +152,14 @@ defineEmits<{
   padding: 0.4rem 0.95rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   cursor: pointer;
   transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 
 .editor-topbar__tab--active {
   background: white;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 
@@ -174,7 +174,7 @@ defineEmits<{
 .editor-topbar__saved {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
   margin-right: 0.25rem;
 }
 
@@ -191,22 +191,22 @@ defineEmits<{
 
 .editor-topbar__btn--ghost {
   background: white;
-  color: var(--pulse-ink);
-  border: 1px solid var(--pulse-border);
+  color: var(--audivoice-ink);
+  border: 1px solid var(--audivoice-border);
 }
 
 .editor-topbar__btn--ghost:hover {
-  background: var(--pulse-soft);
+  background: var(--audivoice-soft);
 }
 
 .editor-topbar__btn--primary {
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
   color: white;
-  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.22);
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.22);
 }
 
 .editor-topbar__btn--primary:hover {
-  background: var(--pulse-magenta);
+  background: var(--audivoice-magenta);
   transform: translateY(-1px);
 }
 

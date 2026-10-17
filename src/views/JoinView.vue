@@ -60,9 +60,10 @@ async function join(anonymous = false) {
       <div class="flex justify-center">
         <BrandMark />
       </div>
-      <h1 class="mt-6 text-center text-2xl font-bold tracking-tight">Join a session</h1>
-      <p class="mt-2 text-center text-pulse-muted text-sm leading-relaxed">
-        Enter the code shown on the presenter’s screen.
+      <h1 class="mt-6 text-center text-2xl font-bold tracking-tight">Join a Session.</h1>
+      <p class="mt-2 text-center text-audivoice-muted text-sm leading-relaxed">
+        Scan the QR code or enter the session code shared by your host. No account is needed to
+        participate when guest access is enabled.
       </p>
 
       <div v-if="step === 'code'" class="mt-8 space-y-4">
@@ -73,7 +74,7 @@ async function join(anonymous = false) {
           autocomplete="one-time-code"
           class="uppercase tracking-[0.3em] text-center text-2xl font-bold"
         />
-        <p v-if="error" class="text-sm text-pulse-danger" role="alert">{{ error }}</p>
+        <p v-if="error" class="text-sm text-audivoice-danger" role="alert">{{ error }}</p>
         <Button class="w-full" :disabled="loading" @click="continueCode">
           Continue <span aria-hidden="true">→</span>
         </Button>
@@ -82,7 +83,7 @@ async function join(anonymous = false) {
       <div v-else class="mt-8 space-y-4">
         <p class="text-center font-semibold">What should we call you?</p>
         <Input v-model="name" label="Your name" placeholder="Optional" maxlength="60" />
-        <p v-if="error" class="text-sm text-pulse-danger" role="alert">{{ error }}</p>
+        <p v-if="error" class="text-sm text-audivoice-danger" role="alert">{{ error }}</p>
         <Button class="w-full" :disabled="loading" @click="join(false)">
           Join session <span aria-hidden="true">→</span>
         </Button>

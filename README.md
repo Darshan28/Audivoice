@@ -1,8 +1,8 @@
-# Pulse — Feel the room.
+# Audivoice — Give every audience a voice.
 
-Real-time audience interaction platform (Mentimeter-class UX) for workshops, research, meetings, and presentations.
+Interactive feedback and audience engagement for reviews, meetings, training, and events.
 
-Presenters create a session, share a short join code / QR, and watch live results as participants respond from any phone or laptop — no participant accounts required.
+Hosts create a session, share a QR code or session code, and collect responses through live polls, Q&A, quizzes, surveys, and ratings. Participants can join without an account when guest access is enabled.
 
 ## Tech stack
 
@@ -23,7 +23,7 @@ npm run dev
 - Web: http://localhost:5173  
 - API: http://localhost:3001  
 
-Without `DATABASE_URL`, data persists to `.data/pulse.json`.  
+Without `DATABASE_URL`, data persists to `.data/audivoice.json`.  
 Without Redis, realtime uses an in-process bus (fine for single-server local/dev).
 
 ### Local test login (no Supabase required)
@@ -81,14 +81,21 @@ If Supabase is not configured yet, use **Continue as test user** on `/auth` whil
 
 ## Routes
 
-- `/` — Landing
-- `/join`, `/join/:code` — Participant join (no Supabase account)
+### Marketing
+- `/` — Home
+- `/features/`, `/live-polls/`, `/qa/`, `/quizzes/`, `/surveys/`, `/ratings/`
+- `/use-cases/` and nested use-case pages
+- `/pricing/`, `/about/`, `/contact/`, `/help/`, `/resources/`
+- `/privacy/`, `/terms/`, `/cookies/`
+
+### Product
+- `/join`, `/join/:code` — Participant join (no account when guest access enabled)
 - `/auth` — Presenter sign-in (Google + magic link)
 - `/auth/callback` — OAuth / magic-link callback
 - `/onboarding` — First-run preferences (server-persisted)
-- `/app/sessions` — Presentations dashboard
-- `/app/sessions/new` — Create
-- `/app/sessions/:id` — Slide editor
+- `/app/sessions` — Sessions dashboard
+- `/app/sessions/new` — Create session
+- `/app/sessions/:id` — Session editor
 - `/app/sessions/:id/present` — Present mode (lobby + live)
 - `/app/sessions/:id/results` — Results + CSV export
 - `/app/settings` — Profile preferences

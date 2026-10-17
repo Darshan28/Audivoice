@@ -15,12 +15,12 @@ const bars = computed(() => {
 })
 
 const colors = [
-  'var(--pulse-bar-1)',
-  'var(--pulse-bar-2)',
-  'var(--pulse-bar-3)',
-  'var(--pulse-bar-4)',
-  'var(--pulse-bar-5)',
-  'var(--pulse-bar-6)',
+  'var(--audivoice-bar-1)',
+  'var(--audivoice-bar-2)',
+  'var(--audivoice-bar-3)',
+  'var(--audivoice-bar-4)',
+  'var(--audivoice-bar-5)',
+  'var(--audivoice-bar-6)',
 ]
 </script>
 
@@ -29,7 +29,7 @@ const colors = [
     <div v-for="(bar, i) in bars" :key="bar.id" class="space-y-1">
       <div class="flex justify-between gap-4" :class="large ? 'text-xl' : 'text-sm'">
         <span class="font-semibold">{{ bar.label }}</span>
-        <span class="tabular-nums text-pulse-muted">{{ bar.percent }}%</span>
+        <span class="tabular-nums text-audivoice-muted">{{ bar.percent }}%</span>
       </div>
       <div class="h-3 rounded-full bg-black/5 overflow-hidden" :class="large ? 'h-4' : ''">
         <div
@@ -38,7 +38,7 @@ const colors = [
         />
       </div>
     </div>
-    <p class="text-sm text-pulse-muted text-center pt-2">
+    <p class="text-sm text-audivoice-muted text-center pt-2">
       {{ results.responseCount }} response{{ results.responseCount === 1 ? '' : 's' }}
     </p>
   </div>

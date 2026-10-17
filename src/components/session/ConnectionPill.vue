@@ -15,12 +15,12 @@ const label = computed(() => {
 <template>
   <div
     class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
-    :class="state === 'connected' ? 'bg-pulse-soft text-pulse-magenta' : 'bg-amber-50 text-amber-800'"
+    :class="state === 'connected' ? 'bg-audivoice-soft text-audivoice-magenta' : 'bg-amber-50 text-amber-800'"
     role="status"
   >
     <span
       class="h-2 w-2 rounded-full"
-      :class="state === 'connected' ? 'bg-pulse-purple' : 'bg-amber-500 animate-pulse'"
+      :class="state === 'connected' ? 'bg-audivoice-purple' : 'bg-amber-500 animate-pulse'"
     />
     {{ label }}
   </div>

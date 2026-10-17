@@ -2,24 +2,44 @@ import type { LiveResults, LiveState, QuestionDTO, SessionDTO } from '@shared/ty
 import type { UserProfileDTO } from '@shared/onboarding'
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase'
 
-const PARTICIPANT_KEY = 'pulse_participant_token'
-export const DEV_ACCESS_TOKEN_KEY = 'pulse_dev_access_token'
+const PARTICIPANT_KEY = 'audivoice_participant_token'
+const PARTICIPANT_KEY_LEGACY = 'pulse_participant_token'
+export const DEV_ACCESS_TOKEN_KEY = 'audivoice_dev_access_token'
+const DEV_ACCESS_TOKEN_KEY_LEGACY = 'pulse_dev_access_token'
 
-export function getDevAccessToken() {
+function readStorage(primary: string, legacy: string) {
   try {
-    return localStorage.getItem(DEV_ACCESS_TOKEN_KEY)
+    const value = localStorage.getItem(primary)
+    if (value) return value
+    const old = localStorage.getItem(legacy)
+    if (old) {
+      localStorage.setItem(primary, old)
+      localStorage.removeItem(legacy)
+      return old
+    }
+    return null
   } catch {
     return null
   }
 }
 
+export function getDevAccessToken() {
+  return readStorage(DEV_ACCESS_TOKEN_KEY, DEV_ACCESS_TOKEN_KEY_LEGACY)
+}
+
 export function setDevAccessToken(token: string) {
   localStorage.setItem(DEV_ACCESS_TOKEN_KEY, token)
+  try {
+    localStorage.removeItem(DEV_ACCESS_TOKEN_KEY_LEGACY)
+  } catch {
+    /* private mode */
+  }
 }
 
 export function clearDevAccessToken() {
   try {
     localStorage.removeItem(DEV_ACCESS_TOKEN_KEY)
+    localStorage.removeItem(DEV_ACCESS_TOKEN_KEY_LEGACY)
   } catch {
     /* private mode */
   }
@@ -39,15 +59,25 @@ export async function getPresenterAccessToken() {
 }
 
 export function getParticipantToken() {
-  return localStorage.getItem(PARTICIPANT_KEY)
+  return readStorage(PARTICIPANT_KEY, PARTICIPANT_KEY_LEGACY)
 }
 
 export function setParticipantToken(token: string) {
   localStorage.setItem(PARTICIPANT_KEY, token)
+  try {
+    localStorage.removeItem(PARTICIPANT_KEY_LEGACY)
+  } catch {
+    /* private mode */
+  }
 }
 
 export function clearParticipantToken() {
-  localStorage.removeItem(PARTICIPANT_KEY)
+  try {
+    localStorage.removeItem(PARTICIPANT_KEY)
+    localStorage.removeItem(PARTICIPANT_KEY_LEGACY)
+  } catch {
+    /* private mode */
+  }
 }
 
 export class ApiClientError extends Error {
@@ -70,7 +100,11 @@ async function request<T>(
     headers.set('Content-Type', 'application/json')
   }
   const participant = getParticipantToken()
-  if (participant) headers.set('x-pulse-participant', participant)
+  if (participant) {
+    headers.set('x-audivoice-participant', participant)
+    // Temporary dual-write for servers still expecting the legacy header name.
+    headers.set('x-pulse-participant', participant)
+  }
 
   if (options.auth !== false) {
     const token = await getPresenterAccessToken()
@@ -252,7 +286,7 @@ export const api = {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `pulse-${sessionId}.csv`
+    a.download = `audivoice-${sessionId}.csv`
     a.click()
     URL.revokeObjectURL(url)
   },

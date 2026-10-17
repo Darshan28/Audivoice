@@ -1,0 +1,496 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import MarketingNav from '@/components/marketing/MarketingNav.vue'
+import { setAuthIntent } from '@/lib/supabase'
+import { useAuthStore } from '@/stores/authStore'
+
+const router = useRouter()
+const auth = useAuthStore()
+
+async function startCreateSession() {
+  await auth.init()
+  setAuthIntent('/app/sessions/new')
+  if (!auth.isAuthenticated) {
+    await router.push({ path: '/auth', query: { next: '/app/sessions/new' } })
+    return
+  }
+  if (!auth.onboardingCompleted) {
+    await router.push({ path: '/onboarding', query: { next: '/app/sessions/new' } })
+    return
+  }
+  await router.push('/app/sessions/new')
+}
+</script>
+
+<template>
+  <div class="landing">
+    <div class="landing-bg" aria-hidden="true">
+      <div class="landing-orb landing-orb--a" />
+      <div class="landing-orb landing-orb--b" />
+      <svg class="landing-orbit" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice">
+        <ellipse cx="1180" cy="280" rx="520" ry="300" stroke="url(#og)" stroke-width="1" opacity="0.28" />
+        <ellipse cx="1120" cy="320" rx="360" ry="210" stroke="url(#og)" stroke-width="0.9" opacity="0.18" />
+        <path
+          d="M-40 620 C300 420, 520 700, 800 520 S1240 300, 1500 480"
+          stroke="url(#og)"
+          stroke-width="1"
+          opacity="0.22"
+        />
+        <defs>
+          <linearGradient id="og" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#94A3B8" stop-opacity="0.15" />
+            <stop offset="45%" stop-color="#0F766E" stop-opacity="0.55" />
+            <stop offset="100%" stop-color="#A5B4FC" stop-opacity="0.2" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <MarketingNav />
+
+    <main class="landing-hero">
+      <div class="landing-copy landing-fade">
+        <div class="landing-badge">
+          <span class="landing-badge-dot" aria-hidden="true" />
+          Audience engagement made simple
+        </div>
+
+        <h1 class="landing-title">
+          Give every audience
+          <span class="landing-title-accent">a voice.</span>
+        </h1>
+
+        <p class="landing-desc">
+          Turn presentations, meetings, classes, and events into interactive experiences. Ask
+          questions, get real-time responses, and understand what your audience thinks.
+        </p>
+
+        <div class="landing-ctas">
+          <button
+            type="button"
+            class="landing-btn-primary landing-btn-hero"
+            @click="startCreateSession"
+          >
+            Get started <span aria-hidden="true">→</span>
+          </button>
+          <button
+            type="button"
+            class="landing-btn-secondary landing-btn-hero"
+            @click="router.push('/join')"
+          >
+            Join a session
+          </button>
+        </div>
+
+        <ul class="landing-features">
+          <li>
+            <span class="landing-feature-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="3.25" stroke="currentColor" stroke-width="1.75" />
+                <path
+                  d="M5.5 19.5c1.6-3 3.9-4.5 6.5-4.5s4.9 1.5 6.5 4.5"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            No account required for participants
+          </li>
+          <li>
+            <span class="landing-feature-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.75" />
+                <path d="M8 20.5h8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+              </svg>
+            </span>
+            Works on any device
+          </li>
+          <li>
+            <span class="landing-feature-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 18V11M11 18V7M17 18V13"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            Live responses in real time
+          </li>
+        </ul>
+      </div>
+
+      <div class="landing-stage landing-fade landing-fade--delay">
+        <img
+          class="landing-stage-img"
+          src="/audivoice-hero.png"
+          alt="Audivoice live session dashboard with audience phone view and real-time responses"
+        />
+      </div>
+    </main>
+  </div>
+</template>
+
+<style scoped>
+.landing {
+  --teal: #0F766E;
+  --teal-deep: #115E59;
+  --ink: #0b1220;
+  --muted: #64748b;
+  --soft: #F0FDFA;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  color: var(--ink);
+  background: #f7f8fb;
+}
+
+.landing-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 45% at 12% 18%, rgba(52, 211, 153, 0.14), transparent 68%),
+    radial-gradient(ellipse 48% 40% at 88% 10%, rgba(15, 118, 110, 0.1), transparent 70%),
+    radial-gradient(ellipse 42% 36% at 78% 88%, rgba(52, 211, 153, 0.12), transparent 72%),
+    linear-gradient(180deg, #fbfcfe 0%, #f6f8fb 48%, #f3f6f5 100%);
+}
+
+.landing-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  animation: landing-drift 18s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+.landing-orb--a {
+  width: min(28vw, 320px);
+  height: min(28vw, 320px);
+  top: 8%;
+  right: 10%;
+  background: radial-gradient(circle at 35% 35%, rgba(15, 118, 110, 0.22), transparent 70%);
+}
+
+.landing-orb--b {
+  width: min(18vw, 200px);
+  height: min(18vw, 200px);
+  bottom: 14%;
+  left: 4%;
+  background: radial-gradient(circle at 40% 40%, rgba(52, 211, 153, 0.2), transparent 72%);
+  animation-delay: -6s;
+}
+
+.landing-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.landing-hero {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: grid;
+  align-items: center;
+  gap: 1.75rem;
+  width: 100%;
+  min-height: 0;
+  padding: 0.75rem 1.25rem 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 960px) {
+  .landing-hero {
+    grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(2.5rem, 5vw, 5.5rem);
+    /* Left aligns with 1120px layout; no right padding so stage stays full-bleed */
+    padding-top: clamp(0.5rem, 1.5vh, 1.25rem);
+    padding-right: 0;
+    padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
+    padding-left: max(1.25rem, calc((100% - 1120px) / 2 + 1.25rem));
+  }
+}
+
+.landing-copy {
+  max-width: 36rem;
+}
+
+@media (min-width: 960px) {
+  .landing-copy {
+    max-width: min(34rem, 100%);
+    padding-right: 0.5rem;
+  }
+}
+
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.landing-badge-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--teal);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.landing-title {
+  margin-top: clamp(1.1rem, 2.2vh, 1.6rem);
+  font-size: clamp(2.55rem, 5.2vw, 4.35rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.038em;
+  color: var(--ink);
+}
+
+.landing-title-accent {
+  display: inline;
+  background: none;
+  color: var(--teal-deep);
+  font-weight: 700;
+}
+
+.landing-desc {
+  margin-top: clamp(1rem, 2vh, 1.35rem);
+  max-width: 32rem;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.landing-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 3vh, 2.1rem);
+}
+
+.landing-btn-primary,
+.landing-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.landing-btn-primary {
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.25rem;
+  min-height: 2.75rem;
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.18);
+}
+
+.landing-btn-primary:hover {
+  background: var(--teal-deep);
+  transform: translateY(-1px);
+}
+
+.landing-btn-secondary {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.25rem;
+  min-height: 2.75rem;
+}
+
+.landing-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.landing-btn-hero {
+  min-height: 3.25rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1.02rem;
+}
+
+.landing-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.5rem;
+  margin-top: clamp(1.75rem, 3.5vh, 2.5rem);
+  font-size: clamp(0.88rem, 1.05vw, 0.95rem);
+  font-weight: 400;
+  color: #64748b;
+}
+
+.landing-features li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.landing-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  color: var(--teal-deep);
+  background: rgba(240, 253, 250, 0.95);
+  border: 1px solid rgba(204, 232, 227, 0.9);
+}
+
+.landing-stage {
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: clamp(0.75rem, 2vh, 1.5rem) 0;
+}
+
+@media (min-width: 960px) {
+  .landing-stage {
+    padding: clamp(0.5rem, 1.5vh, 1.25rem) 0;
+    justify-content: stretch;
+  }
+}
+
+.landing-stage-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: min(88vh, calc(100svh - 4.5rem));
+  object-fit: contain;
+  object-position: center right;
+  animation: landing-stage-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.landing-fade {
+  animation: landing-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-fade--delay {
+  animation-delay: 120ms;
+}
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-stage-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes landing-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(10px, -8px, 0);
+  }
+}
+
+@media (max-width: 959px) {
+  .landing-header {
+    padding-bottom: 0.25rem;
+  }
+
+  .landing-hero {
+    align-content: center;
+    justify-items: center;
+    padding-top: 1.5rem;
+    text-align: left;
+  }
+
+  .landing-copy {
+    width: 100%;
+    max-width: 24rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .landing-title {
+    font-size: clamp(2.35rem, 9.5vw, 3.25rem);
+  }
+
+  .landing-desc {
+    max-width: none;
+  }
+
+  .landing-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .landing-btn-hero {
+    width: 100%;
+  }
+
+  .landing-nav .landing-btn-primary {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.95rem;
+    font-size: 0.875rem;
+  }
+
+  .landing-features {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .landing-stage {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-fade,
+  .landing-fade--delay,
+  .landing-stage-img,
+  .landing-orb {
+    animation: none !important;
+  }
+}
+</style>

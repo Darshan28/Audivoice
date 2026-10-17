@@ -36,8 +36,11 @@ async function create() {
     <div class="app-shell-bg" aria-hidden="true" />
     <div class="relative z-10 card w-full max-w-lg p-8 sm:p-10">
       <BrandMark to="/app/sessions" size="sm" />
-      <h1 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">New presentation</h1>
-      <p class="mt-2 text-sm text-pulse-muted">Give your session a clear title so the room knows what’s coming.</p>
+      <h1 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Start a New Session.</h1>
+      <p class="mt-2 text-sm text-audivoice-muted">
+        Choose an activity to give your team or audience a way to participate — live polls, Q&A,
+        quizzes, surveys, and ratings.
+      </p>
       <form class="mt-7 space-y-4" @submit.prevent="create">
         <Input v-model="title" label="Session title" placeholder="NextGen UX Feedback" />
         <label class="block space-y-2">
@@ -48,7 +51,7 @@ async function create() {
             placeholder="Optional context for your team"
           />
         </label>
-        <p v-if="error" class="text-sm text-pulse-danger">{{ error }}</p>
+        <p v-if="error" class="text-sm text-audivoice-danger">{{ error }}</p>
         <div class="flex flex-col gap-2 pt-1 sm:flex-row">
           <Button type="submit" class="w-full sm:flex-1" :disabled="loading">
             Create session <span aria-hidden="true">→</span>

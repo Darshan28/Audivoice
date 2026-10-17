@@ -3,33 +3,37 @@ withDefaults(
   defineProps<{
     to?: string
     size?: 'sm' | 'md'
+    /** Icon-only mark (no wordmark). */
+    markOnly?: boolean
   }>(),
-  { to: '/', size: 'md' },
+  { to: '/', size: 'md', markOnly: false },
 )
 </script>
 
 <template>
-  <RouterLink :to="to" class="brand-mark" :class="size === 'sm' ? 'text-base' : 'text-lg'">
-    <span
-      class="brand-mark-icon"
-      :class="size === 'sm' ? '!h-8 !w-8 rounded-lg' : ''"
-      aria-hidden="true"
-    >
-      <svg
-        :width="size === 'sm' ? 16 : 18"
-        :height="size === 'sm' ? 16 : 18"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <path
-          d="M2 12h3.2l2.1-5.5L11.5 18l2.8-8.2L16.8 12H22"
-          stroke="currentColor"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </span>
-    Pulse
+  <RouterLink
+    :to="to"
+    class="brand-mark"
+    :class="[
+      size === 'sm' ? 'brand-mark--sm' : 'brand-mark--md',
+      markOnly ? 'brand-mark--mark' : 'brand-mark--logo',
+    ]"
+  >
+    <img
+      v-if="markOnly"
+      src="/logo-mark.svg"
+      alt="Audivoice"
+      class="brand-mark-img brand-mark-img--mark"
+      width="36"
+      height="36"
+    />
+    <img
+      v-else
+      src="/logo.svg"
+      alt="Audivoice"
+      class="brand-mark-img brand-mark-img--logo"
+      width="160"
+      height="33"
+    />
   </RouterLink>
 </template>

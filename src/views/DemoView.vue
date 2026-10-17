@@ -60,9 +60,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-pulse-ink text-white p-3">
+  <div class="min-h-screen bg-audivoice-ink text-white p-3">
     <div class="mb-3 flex items-center justify-between">
-      <h1 class="font-bold">Pulse Demo</h1>
+      <h1 class="font-bold">Audivoice Demo</h1>
       <p class="text-xs opacity-70">Presenter + 2 participants</p>
     </div>
     <p v-if="error" class="text-red-300">{{ error }}</p>

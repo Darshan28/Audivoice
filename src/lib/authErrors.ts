@@ -12,6 +12,10 @@ export function friendlyAuthError(error: unknown, fallback = 'Sign-in failed. Pl
     error && typeof error === 'object' && 'code' in error && typeof (error as { code: unknown }).code === 'string'
       ? (error as { code: string }).code.toLowerCase()
       : ''
+  const status =
+    error && typeof error === 'object' && 'status' in error && typeof (error as { status: unknown }).status === 'number'
+      ? (error as { status: number }).status
+      : null
 
   if (
     code.includes('otp_expired') ||
@@ -35,8 +39,13 @@ export function friendlyAuthError(error: unknown, fallback = 'Sign-in failed. Pl
   ) {
     return 'Sign-in was cancelled. You can try again when ready.'
   }
-  if (lower.includes('email rate limit') || lower.includes('over_email_send_rate_limit')) {
-    return 'Too many sign-in emails were sent. Wait a minute and try again.'
+  if (
+    status === 429 ||
+    code.includes('rate_limit') ||
+    lower.includes('rate limit') ||
+    lower.includes('too many emails were sent')
+  ) {
+    return 'Too many emails were sent. Wait about an hour, or continue with Google.'
   }
   if (
     lower.includes('code verifier') ||

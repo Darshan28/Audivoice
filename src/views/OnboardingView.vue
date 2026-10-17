@@ -85,13 +85,13 @@ async function next() {
     <div class="app-shell-bg" aria-hidden="true" />
     <div class="relative z-10 w-full max-w-lg card p-8 sm:p-10">
       <BrandMark to="/" size="sm" />
-      <p class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-pulse-muted">
+      <p class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-audivoice-muted">
         Step {{ step + 1 }} of 3
       </p>
 
       <template v-if="step === 0">
-        <h1 class="mt-2 text-2xl font-bold tracking-tight">How will you use Pulse?</h1>
-        <p class="mt-2 text-sm text-pulse-muted">Pick all that apply — you can change this later.</p>
+        <h1 class="mt-2 text-2xl font-bold tracking-tight">How will you use Audivoice?</h1>
+        <p class="mt-2 text-sm text-audivoice-muted">Pick all that apply — you can change this later.</p>
         <div class="mt-6 flex flex-wrap gap-2">
           <button
             v-for="option in USE_CASE_OPTIONS"
@@ -100,8 +100,8 @@ async function next() {
             class="rounded-full border px-4 py-2 text-sm font-medium transition"
             :class="
               useCases.includes(option)
-                ? 'border-pulse-purple bg-pulse-soft text-pulse-ink'
-                : 'border-pulse-border bg-white text-pulse-muted hover:border-pulse-purple'
+                ? 'border-audivoice-purple bg-audivoice-soft text-audivoice-ink'
+                : 'border-audivoice-border bg-white text-audivoice-muted hover:border-audivoice-purple'
             "
             @click="toggleUseCase(option)"
           >
@@ -112,7 +112,7 @@ async function next() {
 
       <template v-else-if="step === 1">
         <h1 class="mt-2 text-2xl font-bold tracking-tight">How many people usually join?</h1>
-        <p class="mt-2 text-sm text-pulse-muted">We’ll tune defaults for your typical room size.</p>
+        <p class="mt-2 text-sm text-audivoice-muted">We’ll tune defaults for your typical room size.</p>
         <div class="mt-6 grid gap-2 sm:grid-cols-2">
           <button
             v-for="option in AUDIENCE_SIZE_OPTIONS"
@@ -121,8 +121,8 @@ async function next() {
             class="rounded-2xl border px-4 py-3 text-left text-sm font-medium transition"
             :class="
               audienceSize === option
-                ? 'border-pulse-purple bg-pulse-soft'
-                : 'border-pulse-border bg-white hover:border-pulse-purple'
+                ? 'border-audivoice-purple bg-audivoice-soft'
+                : 'border-audivoice-border bg-white hover:border-audivoice-purple'
             "
             @click="audienceSize = option"
           >
@@ -133,7 +133,7 @@ async function next() {
 
       <template v-else>
         <h1 class="mt-2 text-2xl font-bold tracking-tight">What’s your role?</h1>
-        <p class="mt-2 text-sm text-pulse-muted">Helps us understand who’s using Pulse.</p>
+        <p class="mt-2 text-sm text-audivoice-muted">Helps us understand who’s using Audivoice.</p>
         <div class="mt-6 grid gap-2 sm:grid-cols-2">
           <button
             v-for="option in ROLE_OPTIONS"
@@ -142,8 +142,8 @@ async function next() {
             class="rounded-2xl border px-4 py-3 text-left text-sm font-medium transition"
             :class="
               role === option
-                ? 'border-pulse-purple bg-pulse-soft'
-                : 'border-pulse-border bg-white hover:border-pulse-purple'
+                ? 'border-audivoice-purple bg-audivoice-soft'
+                : 'border-audivoice-border bg-white hover:border-audivoice-purple'
             "
             @click="role = option"
           >
@@ -152,7 +152,7 @@ async function next() {
         </div>
       </template>
 
-      <p v-if="error" class="mt-4 text-sm text-pulse-danger">{{ error }}</p>
+      <p v-if="error" class="mt-4 text-sm text-audivoice-danger">{{ error }}</p>
 
       <div class="mt-8 flex gap-2">
         <Button

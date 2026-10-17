@@ -114,23 +114,23 @@ defineEmits<{
 .type-picker__head p {
   margin: 0.25rem 0 0;
   font-size: 0.85rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .type-picker__close {
   border: 0;
-  background: var(--pulse-bg);
+  background: var(--audivoice-bg);
   width: 2rem;
   height: 2rem;
   border-radius: 0.5rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   cursor: pointer;
 }
 
 .type-picker__section + .type-picker__section {
   margin-top: 1.15rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--pulse-border);
+  border-top: 1px solid var(--audivoice-border);
 }
 
 .type-picker__section h3 {
@@ -139,7 +139,7 @@ defineEmits<{
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .type-picker__grid {
@@ -157,7 +157,7 @@ defineEmits<{
   flex-direction: column;
   align-items: flex-start;
   gap: 0.25rem;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.85rem;
   background: white;
   padding: 0.85rem;
@@ -167,9 +167,9 @@ defineEmits<{
 }
 
 .type-picker__card:hover {
-  border-color: var(--pulse-purple);
-  background: var(--pulse-soft);
-  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.1);
+  border-color: var(--audivoice-purple);
+  background: var(--audivoice-soft);
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.1);
 }
 
 .type-picker__badge {
@@ -179,10 +179,10 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  background: var(--pulse-bg);
+  background: var(--audivoice-bg);
   font-size: 0.62rem;
   font-weight: 700;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
   margin-bottom: 0.25rem;
 }
 
@@ -194,12 +194,12 @@ defineEmits<{
 .type-picker__label {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .type-picker__hint {
   font-size: 0.72rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 @keyframes sheet-in {

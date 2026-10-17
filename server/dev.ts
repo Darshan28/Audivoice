@@ -5,5 +5,5 @@ import { app } from './app.js'
 const port = Number(process.env.PORT || 3001)
 
 serve({ fetch: app.fetch, port }, (info) => {
-  console.log(`[pulse] API listening on http://localhost:${info.port}`)
+  console.log(`[audivoice] API listening on http://localhost:${info.port}`)
 })

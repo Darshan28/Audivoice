@@ -50,24 +50,24 @@ export function resolveAppOrigin(): string {
 }
 
 /**
- * Callback URL passed to Supabase. Embeds `next` so magic links opened in a
- * new tab/device still preserve Create-session intent.
+ * Callback URL passed to Supabase. Must match an allowlisted redirect exactly.
+ * Post-login intent stays in local storage (`setAuthIntent`), not this URL.
  */
-export function getAuthRedirectUrl(next?: string) {
-  const intent = safeAppPath(next || peekAuthIntent())
-  const url = new URL(`${resolveAppOrigin()}/auth/callback`)
-  url.searchParams.set('next', intent)
-  return url.toString()
+export function getAuthRedirectUrl() {
+  return `${resolveAppOrigin()}/auth/callback`
 }
 
-export const AUTH_INTENT_KEY = 'pulse_auth_intent'
-const AUTH_INTENT_LS_KEY = 'pulse_auth_intent_ls'
+export const AUTH_INTENT_KEY = 'audivoice_auth_intent'
+const AUTH_INTENT_KEY_LEGACY = 'pulse_auth_intent'
+const AUTH_INTENT_LS_KEY = 'audivoice_auth_intent_ls'
+const AUTH_INTENT_LS_KEY_LEGACY = 'pulse_auth_intent_ls'
 const AUTH_INTENT_TTL_MS = 60 * 60 * 1000
 
 export function setAuthIntent(path: string) {
   const safe = safeAppPath(path)
   try {
     sessionStorage.setItem(AUTH_INTENT_KEY, safe)
+    sessionStorage.removeItem(AUTH_INTENT_KEY_LEGACY)
   } catch {
     /* private mode */
   }
@@ -76,6 +76,7 @@ export function setAuthIntent(path: string) {
       AUTH_INTENT_LS_KEY,
       JSON.stringify({ path: safe, exp: Date.now() + AUTH_INTENT_TTL_MS }),
     )
+    localStorage.removeItem(AUTH_INTENT_LS_KEY_LEGACY)
   } catch {
     /* private mode */
   }
@@ -83,11 +84,13 @@ export function setAuthIntent(path: string) {
 
 function readDurableIntent(): string | null {
   try {
-    const raw = localStorage.getItem(AUTH_INTENT_LS_KEY)
+    const raw =
+      localStorage.getItem(AUTH_INTENT_LS_KEY) || localStorage.getItem(AUTH_INTENT_LS_KEY_LEGACY)
     if (!raw) return null
     const parsed = JSON.parse(raw) as { path?: string; exp?: number }
     if (!parsed?.path || !parsed.exp || Date.now() > parsed.exp) {
       localStorage.removeItem(AUTH_INTENT_LS_KEY)
+      localStorage.removeItem(AUTH_INTENT_LS_KEY_LEGACY)
       return null
     }
     return safeAppPath(parsed.path)
@@ -99,14 +102,17 @@ function readDurableIntent(): string | null {
 export function consumeAuthIntent(preferred?: unknown) {
   let fromSession: string | null = null
   try {
-    fromSession = sessionStorage.getItem(AUTH_INTENT_KEY)
+    fromSession =
+      sessionStorage.getItem(AUTH_INTENT_KEY) || sessionStorage.getItem(AUTH_INTENT_KEY_LEGACY)
     sessionStorage.removeItem(AUTH_INTENT_KEY)
+    sessionStorage.removeItem(AUTH_INTENT_KEY_LEGACY)
   } catch {
     /* ignore */
   }
   const fromDurable = readDurableIntent()
   try {
     localStorage.removeItem(AUTH_INTENT_LS_KEY)
+    localStorage.removeItem(AUTH_INTENT_LS_KEY_LEGACY)
   } catch {
     /* ignore */
   }
@@ -115,7 +121,8 @@ export function consumeAuthIntent(preferred?: unknown) {
 
 export function peekAuthIntent() {
   try {
-    const fromSession = sessionStorage.getItem(AUTH_INTENT_KEY)
+    const fromSession =
+      sessionStorage.getItem(AUTH_INTENT_KEY) || sessionStorage.getItem(AUTH_INTENT_KEY_LEGACY)
     if (fromSession) return safeAppPath(fromSession)
   } catch {
     /* ignore */

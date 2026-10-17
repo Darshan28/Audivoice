@@ -15,7 +15,7 @@ function shouldUseMemory() {
   if (process.env.USE_MEMORY_DB === 'true') {
     if (isProd) {
       throw new Error(
-        '[pulse] USE_MEMORY_DB=true is not allowed on Vercel/production. Set DATABASE_URL to Postgres and USE_MEMORY_DB=false.',
+        '[audivoice] USE_MEMORY_DB=true is not allowed on Vercel/production. Set DATABASE_URL to Postgres and USE_MEMORY_DB=false.',
       )
     }
     return true
@@ -24,7 +24,7 @@ function shouldUseMemory() {
   if (!url || url.includes('user:pass@localhost')) {
     if (isProd) {
       throw new Error(
-        '[pulse] DATABASE_URL is required in production. Point it at Postgres (e.g. Neon) and run `npx prisma migrate deploy`.',
+        '[audivoice] DATABASE_URL is required in production. Point it at Postgres (e.g. Neon) and run `npx prisma migrate deploy`.',
       )
     }
     return true
@@ -37,11 +37,11 @@ export function getStore(): Store {
 
   if (shouldUseMemory()) {
     store = new MemoryStore()
-    console.log('[pulse] Using file-backed memory store (.data/pulse.json)')
+    console.log('[audivoice] Using file-backed memory store (.data/audivoice.json)')
   } else {
     prisma = new PrismaClient()
     store = new PrismaStore(prisma)
-    console.log('[pulse] Using PostgreSQL via Prisma')
+    console.log('[audivoice] Using PostgreSQL via Prisma')
   }
   return store
 }

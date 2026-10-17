@@ -70,7 +70,7 @@ export function createApp() {
     return c.json(body, status as 400)
   })
 
-  app.get('/api/health', (c) => c.json({ ok: true, service: 'pulse' }))
+  app.get('/api/health', (c) => c.json({ ok: true, service: 'audivoice' }))
 
   /** Localhost-only test presenter login (never available in production / Vercel). */
   app.post('/api/auth/dev-login', async (c) => {
@@ -286,7 +286,7 @@ export function createApp() {
     return new Response(csv, {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename="pulse-${c.req.param('id')}.csv"`,
+        'Content-Disposition': `attachment; filename="audivoice-${c.req.param('id')}.csv"`,
       },
     })
   })

@@ -48,12 +48,12 @@ async function share() {
   <div class="app-shell">
     <div class="app-shell-bg" aria-hidden="true" />
 
-    <header class="relative z-10 border-b border-pulse-border/80 bg-white/80 backdrop-blur-md">
+    <header class="relative z-10 border-b border-audivoice-border/80 bg-white/80 backdrop-blur-md">
       <div class="mx-auto flex max-w-4xl flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div class="min-w-0">
           <BrandMark to="/app/sessions" size="sm" />
           <h1 class="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">{{ store.current?.title }}</h1>
-          <p class="mt-1 text-sm text-pulse-muted">
+          <p class="mt-1 text-sm text-audivoice-muted">
             {{ store.current?.participantCount }} participants · {{ store.current?.questionCount }} questions
           </p>
         </div>
@@ -73,7 +73,7 @@ async function share() {
         <h2 class="mb-5 text-lg font-bold tracking-tight sm:text-xl">{{ row.prompt }}</h2>
         <LiveResultsView :results="row.results" />
       </section>
-      <p v-if="!perQuestion.length" class="text-pulse-muted">Loading results…</p>
+      <p v-if="!perQuestion.length" class="text-audivoice-muted">Loading results…</p>
     </main>
   </div>
 </template>

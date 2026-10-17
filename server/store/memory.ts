@@ -38,7 +38,7 @@ export class MemoryStore implements Store {
   private persistTimer: ReturnType<typeof setTimeout> | null = null
   private ready: Promise<void>
 
-  constructor(filePath = path.join(process.cwd(), '.data', 'pulse.json')) {
+  constructor(filePath = path.join(process.cwd(), '.data', 'audivoice.json')) {
     this.filePath = filePath
     this.ready = this.load()
   }

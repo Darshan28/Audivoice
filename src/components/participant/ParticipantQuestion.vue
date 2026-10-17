@@ -82,8 +82,8 @@ const cfg = computed(() => props.question.config as unknown as Record<string, nu
         class="flex w-full min-h-12 items-center gap-3 rounded-2xl border px-4 py-3 text-left font-medium transition"
         :class="
           selected.includes(opt.id)
-            ? 'border-pulse-purple bg-pulse-soft text-pulse-magenta shadow-sm'
-            : 'border-pulse-border bg-white hover:border-pulse-purple/40'
+            ? 'border-audivoice-purple bg-audivoice-soft text-audivoice-magenta shadow-sm'
+            : 'border-audivoice-border bg-white hover:border-audivoice-purple/40'
         "
         @click="toggleOption(opt.id)"
       >
@@ -91,8 +91,8 @@ const cfg = computed(() => props.question.config as unknown as Record<string, nu
           class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2"
           :class="
             selected.includes(opt.id)
-              ? 'border-pulse-purple bg-pulse-purple text-white'
-              : 'border-pulse-border'
+              ? 'border-audivoice-purple bg-audivoice-purple text-white'
+              : 'border-audivoice-border'
           "
           aria-hidden="true"
         >
@@ -117,7 +117,7 @@ const cfg = computed(() => props.question.config as unknown as Record<string, nu
     </div>
 
     <div v-else-if="question.type === 'RATING' || question.type === 'SCALE'" class="space-y-4">
-      <div class="flex justify-between text-xs text-pulse-muted">
+      <div class="flex justify-between text-xs text-audivoice-muted">
         <span>{{ cfg.minLabel || cfg.min }}</span>
         <span>{{ cfg.maxLabel || cfg.max }}</span>
       </div>
@@ -130,7 +130,7 @@ const cfg = computed(() => props.question.config as unknown as Record<string, nu
           :key="n"
           type="button"
           class="h-12 w-12 rounded-full border font-semibold"
-          :class="rating === n ? 'bg-pulse-purple text-white border-pulse-purple' : 'border-pulse-border'"
+          :class="rating === n ? 'bg-audivoice-purple text-white border-audivoice-purple' : 'border-audivoice-border'"
           @click="rating = n"
         >
           {{ n }}
@@ -145,16 +145,16 @@ const cfg = computed(() => props.question.config as unknown as Record<string, nu
         :maxlength="Number(cfg.maxLength || 500)"
         :placeholder="question.type === 'WORD_CLOUD' ? 'One word…' : 'Type your answer…'"
       />
-      <p class="text-xs text-pulse-muted mt-1 text-right">{{ text.length }}/{{ cfg.maxLength || 500 }}</p>
+      <p class="text-xs text-audivoice-muted mt-1 text-right">{{ text.length }}/{{ cfg.maxLength || 500 }}</p>
     </div>
 
     <div v-else-if="question.type === 'RANKING'" class="space-y-2">
       <div
         v-for="(id, index) in rankOrder"
         :key="id"
-        class="flex items-center gap-2 rounded-2xl border border-pulse-border bg-white px-3 py-3"
+        class="flex items-center gap-2 rounded-2xl border border-audivoice-border bg-white px-3 py-3"
       >
-        <span class="font-bold text-pulse-purple w-6">{{ index + 1 }}</span>
+        <span class="font-bold text-audivoice-purple w-6">{{ index + 1 }}</span>
         <span class="flex-1 font-medium">{{ options.find((o) => o.id === id)?.label }}</span>
         <button type="button" class="btn-ghost px-2 py-1" @click="moveRank(index, -1)">↑</button>
         <button type="button" class="btn-ghost px-2 py-1" @click="moveRank(index, 1)">↓</button>

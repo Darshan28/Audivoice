@@ -34,9 +34,9 @@ onMounted(async () => {
     <div class="app-shell-bg" aria-hidden="true" />
     <div class="relative z-10 w-full max-w-md card p-8 text-center">
       <BrandMark to="/" size="sm" class="justify-center" />
-      <p v-if="!error" class="mt-6 text-pulse-muted">Finishing sign-in…</p>
+      <p v-if="!error" class="mt-6 text-audivoice-muted">Finishing sign-in…</p>
       <div v-else class="mt-6 space-y-4">
-        <p class="text-sm text-pulse-danger">{{ error }}</p>
+        <p class="text-sm text-audivoice-danger">{{ error }}</p>
         <button type="button" class="btn-secondary" @click="router.push('/auth')">
           Back to sign in
         </button>

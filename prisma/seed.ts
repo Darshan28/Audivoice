@@ -6,7 +6,7 @@ async function main() {
   const store = getStore()
   const user = await store.upsertUserProfile({
     authUserId: 'seed-auth-user',
-    email: 'demo@pulse.local',
+    email: 'demo@audivoice.local',
   })
   await store.updateUserProfile(user.id, {
     role: 'Product',

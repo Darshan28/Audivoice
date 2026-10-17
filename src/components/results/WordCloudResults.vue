@@ -10,7 +10,7 @@ const words = computed(() => {
   return list.slice(0, 40).map((w, i) => ({
     ...w,
     size: 0.85 + (w.count / max) * (props.large ? 2.4 : 1.6),
-    color: ['#14b8a6', '#0f9f8a', '#8b7cf6', '#5b9fed', '#2dd4bf'][i % 5],
+    color: ['#0F766E', '#115E59', '#8b7cf6', '#5b9fed', '#14B8A6'][i % 5],
   }))
 })
 </script>
@@ -25,6 +25,6 @@ const words = computed(() => {
     >
       {{ w.text }}
     </span>
-    <p v-if="!words.length" class="text-pulse-muted">Waiting for words…</p>
+    <p v-if="!words.length" class="text-audivoice-muted">Waiting for words…</p>
   </div>
 </template>

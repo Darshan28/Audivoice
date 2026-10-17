@@ -159,7 +159,7 @@ async function shareSession() {
   const url = `${window.location.origin}/join/${code}`
   try {
     if (navigator.share) {
-      await navigator.share({ title: store.current?.title || 'Pulse session', url })
+      await navigator.share({ title: store.current?.title || 'Audivoice session', url })
     } else {
       await navigator.clipboard.writeText(url)
     }
@@ -280,7 +280,7 @@ function onTypeHint() {
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background: var(--pulse-bg);
+  background: var(--audivoice-bg);
 }
 
 .editor__body {
@@ -339,7 +339,7 @@ function onTypeHint() {
   z-index: 90;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: var(--pulse-ink);
+  background: var(--audivoice-ink);
   color: white;
   font-size: 0.8rem;
   font-weight: 600;

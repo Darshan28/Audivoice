@@ -345,8 +345,8 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 
 .content-slide__title-shell--focus,
 .content-slide__body-shell--focus {
-  border-color: var(--pulse-purple);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pulse-purple) 16%, transparent);
+  border-color: var(--audivoice-purple);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--audivoice-purple) 16%, transparent);
 }
 
 .content-slide__body-shell--empty {
@@ -361,7 +361,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 }
 
 .content-slide__body-shell--empty:hover {
-  border-color: color-mix(in srgb, var(--pulse-purple) 45%, #d5dde3);
+  border-color: color-mix(in srgb, var(--audivoice-purple) 45%, #d5dde3);
   background: #f7fbfa;
 }
 
@@ -390,8 +390,8 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   justify-content: center;
   margin-bottom: 0.35rem;
   border-radius: 999px;
-  background: var(--pulse-soft);
-  color: var(--pulse-magenta);
+  background: var(--audivoice-soft);
+  color: var(--audivoice-magenta);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1;
@@ -400,7 +400,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 .content-slide__empty-label {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .content-slide__empty-hint {
@@ -477,7 +477,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 
 .content-slide__body-input--ghost {
   color: transparent;
-  caret-color: var(--pulse-ink);
+  caret-color: var(--audivoice-ink);
 }
 
 .content-slide__body-input--ghost::placeholder {
@@ -508,7 +508,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   padding-left: 1.5rem;
   font-size: 1.05rem;
   font-weight: 500;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .content-slide--dark .content-slide__list li {
@@ -523,7 +523,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 999px;
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
 }
 
 .content-slide__media {
@@ -564,7 +564,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   font-size: 0.8rem;
   font-weight: 600;
   background:
-    radial-gradient(ellipse 55% 45% at 50% 45%, rgba(20, 184, 166, 0.08), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 50% 45%, rgba(15, 118, 110, 0.08), transparent 70%),
     #f4f7f6;
 }
 
@@ -574,7 +574,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 
 .content-slide__art {
   width: min(100%, 13rem);
-  color: #14b8a6;
+  color: #0F766E;
   opacity: 0.85;
 }
 
@@ -585,7 +585,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
   color: white;
   font-size: 0.9rem;
 }
@@ -598,7 +598,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
   padding: 0.75rem 1rem;
   border-radius: 0.65rem;
   background: rgba(255, 255, 255, 0.92);
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .content-slide__compare {
@@ -609,7 +609,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 }
 
 .content-slide__col {
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.85rem;
   padding: 1rem 1.1rem;
   background: #f8faf9;
@@ -628,7 +628,7 @@ const embedSrc = computed(() => (videoUrl.value ? youtubeEmbed(videoUrl.value) :
 }
 
 .content-slide__col:first-child {
-  border-bottom: 3px solid var(--pulse-purple);
+  border-bottom: 3px solid var(--audivoice-purple);
 }
 
 .content-slide__col:last-child {

@@ -1,24 +1,24 @@
 :root {
-  /* Primary brand — teal / mint (matches landing) */
-  --pulse-purple: #14b8a6;
-  --pulse-magenta: #0f9f8a;
-  --pulse-deep: #0b1220;
-  --pulse-soft: #e8f8f4;
-  --pulse-ink: #0b1220;
-  --pulse-muted: #64748b;
-  --pulse-border: #d7e5e1;
-  --pulse-surface: #ffffff;
-  --pulse-bg: #f5f8f7;
-  --pulse-success: #0f8a72;
-  --pulse-warning: #c47f00;
-  --pulse-danger: #dc2626;
-  --pulse-info: #14b8a6;
-  --pulse-bar-1: #14b8a6;
-  --pulse-bar-2: #8b7cf6;
-  --pulse-bar-3: #5b9fed;
-  --pulse-bar-4: #2dd4bf;
-  --pulse-bar-5: #f59e0b;
-  --pulse-bar-6: #94a3b8;
+  /* Primary brand — deep forest (more ownable than mid seafoam) */
+  --audivoice-purple: #0f766e;
+  --audivoice-magenta: #115e59;
+  --audivoice-deep: #0b1220;
+  --audivoice-soft: #f0fdfa;
+  --audivoice-ink: #0b1220;
+  --audivoice-muted: #64748b;
+  --audivoice-border: #cce8e3;
+  --audivoice-surface: #ffffff;
+  --audivoice-bg: #f4faf8;
+  --audivoice-success: #0f766e;
+  --audivoice-warning: #c47f00;
+  --audivoice-danger: #dc2626;
+  --audivoice-info: #0f766e;
+  --audivoice-bar-1: #0f766e;
+  --audivoice-bar-2: #8b7cf6;
+  --audivoice-bar-3: #5b9fed;
+  --audivoice-bar-4: #2dd4bf;
+  --audivoice-bar-5: #f59e0b;
+  --audivoice-bar-6: #94a3b8;
 }
 
 @media (prefers-reduced-motion: reduce) {

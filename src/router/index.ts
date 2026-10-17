@@ -3,14 +3,153 @@ import { authCallbackRedirect, safeAppPath } from '@/lib/authPaths'
 import { setAuthIntent } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/authStore'
 
+const marketingMeta = { public: true, marketing: true }
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'landing',
-      component: () => import('@/views/LandingView.vue'),
+      component: () => import('@/layouts/MarketingLayout.vue'),
+      meta: marketingMeta,
+      children: [
+        {
+          path: '',
+          name: 'landing',
+          component: () => import('@/views/marketing/HomeView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'features/',
+          name: 'features',
+          component: () => import('@/views/marketing/FeaturesOverviewView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'live-polls/',
+          name: 'feature-live-polls',
+          component: () => import('@/views/marketing/FeatureLandingView.vue'),
+          props: { slug: 'live-polls' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'qa/',
+          name: 'feature-qa',
+          component: () => import('@/views/marketing/FeatureLandingView.vue'),
+          props: { slug: 'qa' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'quizzes/',
+          name: 'feature-quizzes',
+          component: () => import('@/views/marketing/FeatureLandingView.vue'),
+          props: { slug: 'quizzes' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'surveys/',
+          name: 'feature-surveys',
+          component: () => import('@/views/marketing/FeatureLandingView.vue'),
+          props: { slug: 'surveys' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'ratings/',
+          name: 'feature-ratings',
+          component: () => import('@/views/marketing/FeatureLandingView.vue'),
+          props: { slug: 'ratings' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'use-cases/',
+          name: 'use-cases',
+          component: () => import('@/views/marketing/UseCasesOverviewView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'use-cases/:slug/',
+          name: 'use-case',
+          component: () => import('@/views/marketing/UseCaseLandingView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'pricing/',
+          name: 'pricing',
+          component: () => import('@/views/marketing/PricingView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'about/',
+          name: 'about',
+          component: () => import('@/views/marketing/AboutView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'contact/',
+          name: 'contact',
+          component: () => import('@/views/marketing/ContactView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'help/',
+          name: 'help',
+          component: () => import('@/views/marketing/HelpView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'resources/',
+          name: 'resources',
+          component: () => import('@/views/marketing/ResourcesView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'resources/:slug/',
+          name: 'resource-article',
+          component: () => import('@/views/marketing/ArticleStubView.vue'),
+          meta: marketingMeta,
+        },
+        {
+          path: 'privacy/',
+          name: 'privacy',
+          component: () => import('@/views/marketing/LegalPageView.vue'),
+          props: { slug: 'privacy' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'terms/',
+          name: 'terms',
+          component: () => import('@/views/marketing/LegalPageView.vue'),
+          props: { slug: 'terms' },
+          meta: marketingMeta,
+        },
+        {
+          path: 'cookies/',
+          name: 'cookies',
+          component: () => import('@/views/marketing/LegalPageView.vue'),
+          props: { slug: 'cookies' },
+          meta: marketingMeta,
+        },
+        // Slashless nested redirects for dynamic segments
+        { path: 'use-cases/:slug', redirect: (to) => `/use-cases/${to.params.slug}/` },
+        { path: 'resources/:slug', redirect: (to) => `/resources/${to.params.slug}/` },
+      ],
     },
+    // Trailing-slash redirects for marketing paths without slash
+    { path: '/features', redirect: '/features/' },
+    { path: '/live-polls', redirect: '/live-polls/' },
+    { path: '/qa', redirect: '/qa/' },
+    { path: '/quizzes', redirect: '/quizzes/' },
+    { path: '/surveys', redirect: '/surveys/' },
+    { path: '/ratings', redirect: '/ratings/' },
+    { path: '/use-cases', redirect: '/use-cases/' },
+    { path: '/pricing', redirect: '/pricing/' },
+    { path: '/about', redirect: '/about/' },
+    { path: '/contact', redirect: '/contact/' },
+    { path: '/help', redirect: '/help/' },
+    { path: '/resources', redirect: '/resources/' },
+    { path: '/privacy', redirect: '/privacy/' },
+    { path: '/terms', redirect: '/terms/' },
+    { path: '/cookies', redirect: '/cookies/' },
     {
       path: '/join',
       name: 'join',
@@ -109,7 +248,7 @@ router.beforeEach(async (to) => {
   const auth = useAuthStore()
   await auth.init()
 
-  if (to.meta.public) return true
+  if (to.meta.public || to.meta.marketing) return true
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     const next = safeAppPath(to.fullPath)
@@ -117,7 +256,6 @@ router.beforeEach(async (to) => {
     return { path: '/auth', query: { next } }
   }
 
-  // Wait for profile when authenticated so we do not flash dashboard → logout/onboarding.
   if (
     to.meta.requiresAuth &&
     auth.isAuthenticated &&
@@ -130,7 +268,6 @@ router.beforeEach(async (to) => {
     }
   }
 
-  // Only gate onboarding when profile is known. Profile errors must not look like "incomplete".
   if (
     to.meta.requiresAuth &&
     auth.isAuthenticated &&

@@ -19,16 +19,16 @@ const ranking = computed(
     <li
       v-for="(item, index) in ranking"
       :key="item.id"
-      class="flex items-center gap-4 rounded-2xl bg-white/90 border border-pulse-border px-4 py-3"
+      class="flex items-center gap-4 rounded-2xl bg-white/90 border border-audivoice-border px-4 py-3"
     >
       <span
-        class="flex h-10 w-10 items-center justify-center rounded-full bg-pulse-purple text-white font-bold"
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-audivoice-purple text-white font-bold"
       >
         {{ index + 1 }}
       </span>
       <div class="flex-1 text-left">
         <p :class="large ? 'text-xl' : 'text-base'" class="font-semibold">{{ item.label }}</p>
-        <p class="text-sm text-pulse-muted">Avg rank {{ item.averageRank }}</p>
+        <p class="text-sm text-audivoice-muted">Avg rank {{ item.averageRank }}</p>
       </div>
     </li>
   </ol>

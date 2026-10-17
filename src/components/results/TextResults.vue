@@ -13,10 +13,10 @@ const texts = computed(
     <div
       v-for="t in texts"
       :key="t.id"
-      class="rounded-2xl border border-pulse-border bg-white px-4 py-3 text-left shadow-sm"
+      class="rounded-2xl border border-audivoice-border bg-white px-4 py-3 text-left shadow-sm"
     >
       {{ t.text }}
     </div>
-    <p v-if="!texts.length" class="text-center text-pulse-muted">No responses yet</p>
+    <p v-if="!texts.length" class="text-center text-audivoice-muted">No responses yet</p>
   </div>
 </template>

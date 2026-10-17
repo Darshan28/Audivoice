@@ -14,7 +14,6 @@ import {
   getAuthRedirectUrl,
   getSupabaseBrowserClient,
   isSupabaseConfigured,
-  peekAuthIntent,
 } from '@/lib/supabase'
 
 export type ProfileStatus = 'idle' | 'loading' | 'ready' | 'error'
@@ -198,13 +197,12 @@ export const useAuthStore = defineStore('auth', () => {
     const { error: authError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getAuthRedirectUrl(peekAuthIntent()),
+        redirectTo: getAuthRedirectUrl(),
       },
     })
     if (authError) {
-      const message = friendlyAuthError(authError, 'Google sign-in failed. Please try again.')
-      error.value = message
-      throw new Error(message)
+      error.value = friendlyAuthError(authError, 'Google sign-in failed. Please try again.')
+      throw authError
     }
   }
 
@@ -217,13 +215,12 @@ export const useAuthStore = defineStore('auth', () => {
     const { error: authError } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
-        emailRedirectTo: getAuthRedirectUrl(peekAuthIntent()),
+        emailRedirectTo: getAuthRedirectUrl(),
       },
     })
     if (authError) {
-      const message = friendlyAuthError(authError, 'Could not send magic link. Please try again.')
-      error.value = message
-      throw new Error(message)
+      error.value = friendlyAuthError(authError, 'Could not send magic link. Please try again.')
+      throw authError
     }
   }
 

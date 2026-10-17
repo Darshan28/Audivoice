@@ -32,7 +32,7 @@ function formatDate(iso: string) {
   <div class="app-shell">
     <div class="app-shell-bg" aria-hidden="true" />
 
-    <header class="relative z-10 border-b border-pulse-border/80 bg-white/80 backdrop-blur-md">
+    <header class="relative z-10 border-b border-audivoice-border/80 bg-white/80 backdrop-blur-md">
       <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-4 sm:px-6">
         <BrandMark />
         <div class="flex flex-wrap items-center gap-2">
@@ -47,13 +47,13 @@ function formatDate(iso: string) {
 
     <main class="relative z-10 mx-auto max-w-5xl px-5 py-10 sm:px-6">
       <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Your presentations</h1>
-      <p class="mt-2 text-pulse-muted">Create, edit, and present live sessions.</p>
+      <p class="mt-2 text-audivoice-muted">Create, edit, and present live sessions.</p>
 
-      <div v-if="store.loading" class="mt-10 text-pulse-muted">Loading…</div>
+      <div v-if="store.loading" class="mt-10 text-audivoice-muted">Loading…</div>
 
       <div v-else-if="!store.sessions.length" class="card mt-10 p-10 text-center sm:p-12">
         <div
-          class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-pulse-soft text-pulse-magenta"
+          class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-audivoice-soft text-audivoice-magenta"
           aria-hidden="true"
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -66,7 +66,7 @@ function formatDate(iso: string) {
           </svg>
         </div>
         <p class="mt-5 text-lg font-semibold">No presentations yet</p>
-        <p class="mt-2 text-pulse-muted">Create your first session to feel the room.</p>
+        <p class="mt-2 text-audivoice-muted">Create your first session to feel the room.</p>
         <Button class="mt-6" @click="router.push('/app/sessions/new')">
           Create presentation <span aria-hidden="true">→</span>
         </Button>
@@ -76,16 +76,16 @@ function formatDate(iso: string) {
         <li
           v-for="s in store.sessions"
           :key="s.id"
-          class="card flex flex-col gap-4 p-5 transition hover:border-pulse-purple hover:shadow-glow sm:flex-row sm:items-center sm:justify-between"
+          class="card flex flex-col gap-4 p-5 transition hover:border-audivoice-purple hover:shadow-glow sm:flex-row sm:items-center sm:justify-between"
         >
           <div class="min-w-0">
             <button
-              class="text-left text-lg font-bold tracking-tight transition hover:text-pulse-magenta"
+              class="text-left text-lg font-bold tracking-tight transition hover:text-audivoice-magenta"
               @click="router.push(`/app/sessions/${s.id}`)"
             >
               {{ s.title }}
             </button>
-            <p class="mt-1 text-sm text-pulse-muted">
+            <p class="mt-1 text-sm text-audivoice-muted">
               {{ s.participantCount }} participants · {{ s.questionCount }} slides ·
               {{ formatDate(s.updatedAt) }}
             </p>

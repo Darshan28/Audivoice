@@ -99,12 +99,13 @@ async function continueAsTestUser() {
     <div class="app-shell-bg" aria-hidden="true" />
     <div class="relative z-10 w-full max-w-md card p-8 sm:p-10">
       <BrandMark to="/" size="sm" />
-      <h1 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Continue to Pulse</h1>
-      <p class="mt-2 text-sm text-pulse-muted">
-        Create your first live session in under a minute. Participants never need an account.
+      <h1 class="mt-6 text-2xl font-bold tracking-tight sm:text-3xl">Continue to Audivoice</h1>
+      <p class="mt-2 text-sm text-audivoice-muted">
+        New here? Your first sign-in creates an account. Returning hosts can pick up where they left
+        off.
       </p>
 
-      <div v-if="magicSent" class="mt-8 rounded-2xl bg-pulse-soft px-4 py-5 text-sm text-pulse-ink">
+      <div v-if="magicSent" class="mt-8 rounded-2xl bg-audivoice-soft px-4 py-5 text-sm text-audivoice-ink">
         Check your email for a magic link to finish signing in.
       </div>
 
@@ -122,27 +123,39 @@ async function continueAsTestUser() {
         <template v-if="supabaseReady">
           <div
             v-if="auth.devLoginEnabled"
-            class="flex items-center gap-3 text-xs uppercase tracking-wide text-pulse-muted"
+            class="flex items-center gap-3 text-xs uppercase tracking-wide text-audivoice-muted"
           >
-            <span class="h-px flex-1 bg-pulse-border" />
+            <span class="h-px flex-1 bg-audivoice-border" />
             or
-            <span class="h-px flex-1 bg-pulse-border" />
+            <span class="h-px flex-1 bg-audivoice-border" />
           </div>
 
           <Button class="w-full" variant="secondary" :disabled="loading" @click="google">
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
               <path
+                fill="#4285F4"
+                d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.3h6.44c-.28 1.41-1.12 2.6-2.38 3.4v2.82h3.84c2.25-2.07 3.59-5.12 3.59-8.25z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.07 7.93-2.91l-3.84-2.82c-1.07.72-2.44 1.15-4.09 1.15-3.14 0-5.8-2.12-6.76-4.97H1.28v2.91C3.25 21.3 7.31 24 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.24 14.45c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V7H1.28A11.96 11.96 0 0 0 0 12.17c0 1.93.46 3.75 1.28 5.36l3.96-3.08z"
+              />
+              <path
                 fill="#EA4335"
-                d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.3 14.6 2.4 12 2.4 6.9 2.4 2.7 6.6 2.7 11.7S6.9 21 12 21c5.2 0 8.6-3.6 8.6-8.7 0-.6-.1-1-.2-1.5H12z"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.7 1.28 6.64L5.24 9.55C6.2 6.7 8.86 4.75 12 4.75z"
               />
             </svg>
             Continue with Google
           </Button>
 
-          <div class="flex items-center gap-3 text-xs uppercase tracking-wide text-pulse-muted">
-            <span class="h-px flex-1 bg-pulse-border" />
+          <div class="flex items-center gap-3 text-xs uppercase tracking-wide text-audivoice-muted">
+            <span class="h-px flex-1 bg-audivoice-border" />
             or
-            <span class="h-px flex-1 bg-pulse-border" />
+            <span class="h-px flex-1 bg-audivoice-border" />
           </div>
 
           <form class="space-y-3" @submit.prevent="sendMagicLink">
@@ -158,15 +171,18 @@ async function continueAsTestUser() {
 
         <p
           v-else-if="auth.devLoginEnabled"
-          class="text-center text-xs text-pulse-muted"
+          class="text-center text-xs text-audivoice-muted"
         >
           Local test login — Supabase is not configured.
         </p>
       </div>
 
-      <p v-if="error" class="mt-4 text-sm text-pulse-danger">{{ error }}</p>
-      <p class="mt-6 text-center text-xs text-pulse-muted">
-        By continuing you agree to use Pulse for live audience sessions.
+      <p v-if="error" class="mt-4 text-sm text-audivoice-danger">{{ error }}</p>
+      <p class="mt-6 text-center text-xs text-audivoice-muted">
+        By continuing you agree to our
+        <RouterLink to="/terms/" class="underline hover:text-audivoice-ink">Terms</RouterLink>
+        and
+        <RouterLink to="/privacy/" class="underline hover:text-audivoice-ink">Privacy Policy</RouterLink>.
       </p>
     </div>
   </div>

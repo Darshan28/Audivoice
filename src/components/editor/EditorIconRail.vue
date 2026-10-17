@@ -62,19 +62,19 @@ defineEmits<{
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   cursor: pointer;
   transition: background 0.15s, color 0.15s, transform 0.15s;
 }
 
 .icon-rail__btn:hover {
-  background: var(--pulse-bg);
-  color: var(--pulse-ink);
+  background: var(--audivoice-bg);
+  color: var(--audivoice-ink);
 }
 
 .icon-rail__btn--active {
-  background: var(--pulse-soft);
-  color: var(--pulse-magenta);
+  background: var(--audivoice-soft);
+  color: var(--audivoice-magenta);
 }
 
 @media (max-width: 900px) {

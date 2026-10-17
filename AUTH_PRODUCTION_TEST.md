@@ -1,4 +1,4 @@
-# Pulse — Auth & production readiness test plan
+# Audivoice — Auth & production readiness test plan
 
 Use this checklist before shipping presenter authentication to a real Vercel deployment.
 Do not treat green typecheck / lint / build as sufficient.
@@ -53,7 +53,7 @@ npx prisma migrate deploy
 
 | Variable | Notes |
 |---|---|
-| `VITE_APP_URL` | Canonical production URL, e.g. `https://pulse.example.com` (no trailing slash) |
+| `VITE_APP_URL` | Canonical production URL, e.g. `https://audivoice.example.com` (no trailing slash) |
 | `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Browser-safe |
 | `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Server JWT verification |
 | `DATABASE_URL` | Production Postgres (pooled URL recommended) |
@@ -89,7 +89,7 @@ https://your-custom-domain.com/auth/callback
 
 Site URL should be the canonical production origin.
 
-Pulse embeds `?next=` on the callback URL for intent preservation. `next` is validated client-side to same-app relative paths only (`/app…`, `/onboarding…`, `/demo…`). Arbitrary external redirect targets are rejected.
+Audivoice embeds `?next=` on the callback URL for intent preservation. `next` is validated client-side to same-app relative paths only (`/app…`, `/onboarding…`, `/demo…`). Arbitrary external redirect targets are rejected.
 
 ---
 
@@ -100,7 +100,7 @@ Pulse embeds `?next=` on the callback URL for intent preservation. `next` is val
 [ ] Continue with Google
 [ ] OAuth succeeds
 [ ] Callback succeeds (`/auth/callback`)
-[ ] User lands in Pulse (not unexpectedly on homepage)
+[ ] User lands in Audivoice (not unexpectedly on homepage)
 [ ] Onboarding appears if required
 [ ] Create session works after onboarding
 [ ] Refresh preserves authentication

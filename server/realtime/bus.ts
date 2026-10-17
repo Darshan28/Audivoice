@@ -41,7 +41,7 @@ class UpstashBus implements RealtimeBus {
   }
 
   private channel(sessionId: string) {
-    return `pulse:session:${sessionId}`
+    return `audivoice:session:${sessionId}`
   }
 
   async publish(event: RealtimeEvent) {
@@ -99,7 +99,7 @@ class UpstashBus implements RealtimeBus {
 let bus: RealtimeBus | null = null
 
 function resolveUpstashConfig() {
-  // Prefer Pulse names; also accept Upstash/Vercel integration defaults.
+  // Prefer Audivoice names; also accept Upstash/Vercel integration defaults.
   const url =
     process.env.REDIS_URL?.trim() || process.env.UPSTASH_REDIS_REST_URL?.trim() || ''
   const token =
@@ -113,16 +113,16 @@ export function getRealtimeBus(): RealtimeBus {
   const isProd = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production'
   if (url && token) {
     bus = new UpstashBus(url, token)
-    console.log('[pulse] Realtime: Upstash Redis')
+    console.log('[audivoice] Realtime: Upstash Redis')
   } else {
     if (isProd) {
       console.warn(
-        '[pulse] Redis env missing on Vercel — using in-process memory bus. ' +
+        '[audivoice] Redis env missing on Vercel — using in-process memory bus. ' +
           'Set REDIS_URL + REDIS_TOKEN (or UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN).',
       )
     }
     bus = new MemoryBus()
-    console.log('[pulse] Realtime: in-process memory bus')
+    console.log('[audivoice] Realtime: in-process memory bus')
   }
   return bus
 }

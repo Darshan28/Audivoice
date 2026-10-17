@@ -120,18 +120,7 @@ function updateOption(i: number, value: string, options: string[]) {
           : undefined"
       >
         <div v-if="slideShowLogo" class="editor-slide__brand" aria-hidden="true">
-          <span class="editor-slide__brand-mark">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M2 12h3.2l2.1-5.5L11.5 18l2.8-8.2L16.8 12H22"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          Pulse
+          <img src="/logo.svg" alt="" class="editor-slide__logo" width="120" height="25" />
         </div>
 
         <!-- Content slides -->
@@ -306,7 +295,7 @@ function updateOption(i: number, value: string, options: string[]) {
         </template>
 
         <div v-if="showJoiningInfo" class="editor-slide__join">
-          Join at pulse · <strong>{{ joinCode || '————' }}</strong>
+          Join at audivoice.com · <strong>{{ joinCode || '————' }}</strong>
         </div>
       </div>
       </div>
@@ -340,7 +329,7 @@ function updateOption(i: number, value: string, options: string[]) {
   justify-content: center;
   border-radius: 1rem;
   background: white;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
@@ -355,20 +344,20 @@ function updateOption(i: number, value: string, options: string[]) {
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .editor-empty__cta {
   margin-top: 1.25rem;
   border: 0;
   border-radius: 999px;
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
   color: white;
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.7rem 1.2rem;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.22);
+  box-shadow: 0 8px 20px rgba(15, 118, 110, 0.22);
 }
 
 .editor-stage {
@@ -420,22 +409,15 @@ function updateOption(i: number, value: string, options: string[]) {
   right: 1.25rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #a8b3bd;
   z-index: 2;
 }
 
-.editor-slide__brand-mark {
-  display: inline-flex;
-  width: 1.15rem;
-  height: 1.15rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3rem;
-  background: linear-gradient(135deg, #14b8a6, #2dd4bf);
-  color: white;
+.editor-slide__logo {
+  display: block;
+  height: 1.1rem;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.85;
 }
 
 .editor-slide__prompt-wrap {
@@ -453,8 +435,8 @@ function updateOption(i: number, value: string, options: string[]) {
 }
 
 .editor-slide__prompt-wrap--focus {
-  border-color: var(--pulse-purple);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pulse-purple) 18%, transparent);
+  border-color: var(--audivoice-purple);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--audivoice-purple) 18%, transparent);
 }
 
 .editor-slide__prompt {
@@ -506,7 +488,7 @@ function updateOption(i: number, value: string, options: string[]) {
   padding: 0.35rem 0.5rem;
   border-radius: 0.65rem;
   background: white;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
   white-space: nowrap;
   z-index: 5;
@@ -515,10 +497,10 @@ function updateOption(i: number, value: string, options: string[]) {
 .editor-toolbar__style {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   padding: 0.2rem 0.45rem;
   border-radius: 0.4rem;
-  background: var(--pulse-bg);
+  background: var(--audivoice-bg);
 }
 
 .editor-toolbar__swatch {
@@ -535,7 +517,7 @@ function updateOption(i: number, value: string, options: string[]) {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 0.35rem;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   cursor: default;
   opacity: 0.55;
 }
@@ -543,14 +525,14 @@ function updateOption(i: number, value: string, options: string[]) {
 .editor-toolbar__sep {
   width: 1px;
   height: 1rem;
-  background: var(--pulse-border);
+  background: var(--audivoice-border);
   margin: 0 0.15rem;
 }
 
 .editor-toolbar__hint {
   font-size: 0.65rem;
   font-weight: 600;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   padding-right: 0.25rem;
 }
 
@@ -595,7 +577,7 @@ function updateOption(i: number, value: string, options: string[]) {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  border-bottom: 3px solid color-mix(in srgb, var(--pulse-purple) 45%, #cbd5e1);
+  border-bottom: 3px solid color-mix(in srgb, var(--audivoice-purple) 45%, #cbd5e1);
   padding: 0.35rem 0 0.55rem;
 }
 
@@ -617,7 +599,7 @@ function updateOption(i: number, value: string, options: string[]) {
   width: 1.5rem;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .editor-option__input,
@@ -628,7 +610,7 @@ function updateOption(i: number, value: string, options: string[]) {
   background: transparent;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   outline: none;
   padding: 0.25rem 0;
 }
@@ -636,7 +618,7 @@ function updateOption(i: number, value: string, options: string[]) {
 .editor-option__remove {
   border: 0;
   background: transparent;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   opacity: 0;
   cursor: pointer;
   padding: 0.2rem 0.35rem;
@@ -651,13 +633,13 @@ function updateOption(i: number, value: string, options: string[]) {
 
 .editor-option__remove:hover {
   background: #fee2e2;
-  color: var(--pulse-danger);
+  color: var(--audivoice-danger);
 }
 
 .editor-option__count {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   min-width: 1.25rem;
   text-align: right;
 }
@@ -667,7 +649,7 @@ function updateOption(i: number, value: string, options: string[]) {
   margin-top: 0.35rem;
   border: 0;
   background: transparent;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -682,7 +664,7 @@ function updateOption(i: number, value: string, options: string[]) {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.75rem;
   padding: 0.55rem 0.7rem;
   background: #fafbfb;
@@ -702,10 +684,10 @@ function updateOption(i: number, value: string, options: string[]) {
   align-items: center;
   justify-content: center;
   border-radius: 0.4rem;
-  background: var(--pulse-soft);
+  background: var(--audivoice-soft);
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
 }
 
 .editor-open__field {
@@ -727,7 +709,7 @@ function updateOption(i: number, value: string, options: string[]) {
 .editor-open__limit {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .editor-bubbles {
@@ -801,7 +783,7 @@ function updateOption(i: number, value: string, options: string[]) {
 .editor-slide__response-label {
   margin: 0.85rem 0 0;
   font-size: 0.85rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .editor-scale-labels {
@@ -810,7 +792,7 @@ function updateOption(i: number, value: string, options: string[]) {
   gap: 1rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   margin-bottom: 0.85rem;
 }
 
@@ -821,22 +803,22 @@ function updateOption(i: number, value: string, options: string[]) {
 
 .editor-scale-tick {
   flex: 1;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.65rem;
   background: #f8faf9;
   padding: 0.85rem 0.35rem;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   cursor: default;
 }
 
-.editor-scale-tick:nth-child(1) { border-bottom: 3px solid var(--pulse-bar-1); }
-.editor-scale-tick:nth-child(2) { border-bottom: 3px solid var(--pulse-bar-2); }
-.editor-scale-tick:nth-child(3) { border-bottom: 3px solid var(--pulse-bar-3); }
-.editor-scale-tick:nth-child(4) { border-bottom: 3px solid var(--pulse-bar-4); }
-.editor-scale-tick:nth-child(5) { border-bottom: 3px solid var(--pulse-bar-5); }
-.editor-scale-tick:nth-child(6) { border-bottom: 3px solid var(--pulse-bar-6); }
+.editor-scale-tick:nth-child(1) { border-bottom: 3px solid var(--audivoice-bar-1); }
+.editor-scale-tick:nth-child(2) { border-bottom: 3px solid var(--audivoice-bar-2); }
+.editor-scale-tick:nth-child(3) { border-bottom: 3px solid var(--audivoice-bar-3); }
+.editor-scale-tick:nth-child(4) { border-bottom: 3px solid var(--audivoice-bar-4); }
+.editor-scale-tick:nth-child(5) { border-bottom: 3px solid var(--audivoice-bar-5); }
+.editor-scale-tick:nth-child(6) { border-bottom: 3px solid var(--audivoice-bar-6); }
 
 .editor-slide__join {
   position: absolute;

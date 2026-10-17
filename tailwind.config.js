@@ -4,28 +4,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        pulse: {
-          purple: 'var(--pulse-purple)',
-          magenta: 'var(--pulse-magenta)',
-          deep: 'var(--pulse-deep)',
-          soft: 'var(--pulse-soft)',
-          ink: 'var(--pulse-ink)',
-          muted: 'var(--pulse-muted)',
-          border: 'var(--pulse-border)',
-          surface: 'var(--pulse-surface)',
-          bg: 'var(--pulse-bg)',
-          success: 'var(--pulse-success)',
-          warning: 'var(--pulse-warning)',
-          danger: 'var(--pulse-danger)',
-          info: 'var(--pulse-info)',
+        audivoice: {
+          purple: 'var(--audivoice-purple)',
+          magenta: 'var(--audivoice-magenta)',
+          deep: 'var(--audivoice-deep)',
+          soft: 'var(--audivoice-soft)',
+          ink: 'var(--audivoice-ink)',
+          muted: 'var(--audivoice-muted)',
+          border: 'var(--audivoice-border)',
+          surface: 'var(--audivoice-surface)',
+          bg: 'var(--audivoice-bg)',
+          success: 'var(--audivoice-success)',
+          warning: 'var(--audivoice-warning)',
+          danger: 'var(--audivoice-danger)',
+          info: 'var(--audivoice-info)',
         },
       },
       fontFamily: {
-        sans: ['Sora', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 12px 40px rgba(15, 39, 42, 0.07)',
-        glow: '0 12px 28px rgba(20, 184, 166, 0.22)',
+        glow: '0 12px 28px rgba(15, 118, 110, 0.22)',
       },
       keyframes: {
         'fade-up': {

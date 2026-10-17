@@ -4,7 +4,8 @@ import { AppError } from './errors.js'
 
 export const DEV_AUTH_USER_ID = 'dev-local-user'
 export const DEV_AUTH_EMAIL = 'dev@localhost'
-const DEV_TOKEN_PREFIX = 'pulse_dev.'
+const DEV_TOKEN_PREFIX = 'audivoice_dev.'
+const DEV_TOKEN_PREFIX_LEGACY = 'pulse_dev.'
 
 const LOCAL_ORIGINS = new Set(['http://localhost:5173', 'http://127.0.0.1:5173'])
 
@@ -21,7 +22,7 @@ function getDevAuthSecret() {
   if (isProductionRuntime()) {
     throw new AppError('FORBIDDEN', 'Dev auth is not available.', 403)
   }
-  return process.env.DEV_AUTH_SECRET?.trim() || 'pulse-local-dev-auth-secret'
+  return process.env.DEV_AUTH_SECRET?.trim() || 'audivoice-local-dev-auth-secret'
 }
 
 function b64url(input: Buffer | string) {
@@ -34,7 +35,13 @@ function signPayload(payloadB64: string) {
 }
 
 export function isDevAccessToken(token: string) {
-  return token.startsWith(DEV_TOKEN_PREFIX)
+  return token.startsWith(DEV_TOKEN_PREFIX) || token.startsWith(DEV_TOKEN_PREFIX_LEGACY)
+}
+
+function stripDevTokenPrefix(token: string) {
+  if (token.startsWith(DEV_TOKEN_PREFIX)) return token.slice(DEV_TOKEN_PREFIX.length)
+  if (token.startsWith(DEV_TOKEN_PREFIX_LEGACY)) return token.slice(DEV_TOKEN_PREFIX_LEGACY.length)
+  return token
 }
 
 export function mintDevAccessToken() {
@@ -54,7 +61,7 @@ export function mintDevAccessToken() {
 
 export function verifyDevAccessToken(token: string): { authUserId: string; email: string } | null {
   if (!isDevAuthAllowed() || !isDevAccessToken(token)) return null
-  const body = token.slice(DEV_TOKEN_PREFIX.length)
+  const body = stripDevTokenPrefix(token)
   const lastDot = body.lastIndexOf('.')
   if (lastDot <= 0) return null
   const payloadB64 = body.slice(0, lastDot)

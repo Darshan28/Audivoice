@@ -130,27 +130,27 @@ async function submit(value: unknown) {
         <ConnectionPill :state="connectionState" />
       </div>
 
-      <p class="text-sm text-pulse-muted">{{ session?.title }}</p>
-      <p v-if="progress" class="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-pulse-magenta">
+      <p class="text-sm text-audivoice-muted">{{ session?.title }}</p>
+      <p v-if="progress" class="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-audivoice-magenta">
         {{ progress }}
       </p>
 
       <div v-if="status === 'ended'" class="card mt-10 p-8 text-center">
         <p class="text-2xl font-bold tracking-tight">Session ended</p>
-        <p class="mt-2 text-pulse-muted">Thanks for participating.</p>
+        <p class="mt-2 text-audivoice-muted">Thanks for participating.</p>
       </div>
 
       <div v-else-if="status === 'waiting'" class="card mt-10 p-8 text-center">
-        <div class="mx-auto h-12 w-12 rounded-full border-4 border-pulse-purple border-t-transparent animate-spin" />
+        <div class="mx-auto h-12 w-12 rounded-full border-4 border-audivoice-purple border-t-transparent animate-spin" />
         <p class="mt-6 text-xl font-semibold tracking-tight">Waiting for the next question…</p>
       </div>
 
       <div v-else-if="status === 'submitted'" class="card mt-10 p-8 text-center">
-        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pulse-soft text-3xl text-pulse-magenta">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-audivoice-soft text-3xl text-audivoice-magenta">
           ✓
         </div>
         <p class="mt-6 text-xl font-bold tracking-tight">Response recorded</p>
-        <p class="mt-2 text-pulse-muted">Waiting for the next question…</p>
+        <p class="mt-2 text-audivoice-muted">Waiting for the next question…</p>
       </div>
 
       <div v-else-if="activeQuestion && activeIsContent" class="card mt-6 p-5 sm:p-6">
@@ -159,14 +159,14 @@ async function submit(value: unknown) {
           :title="activeQuestion.prompt"
           :config="activeContentConfig"
         />
-        <p class="mt-5 text-center text-sm text-pulse-muted">
+        <p class="mt-5 text-center text-sm text-audivoice-muted">
           Follow along on the presenter’s screen
         </p>
       </div>
 
       <div v-else-if="activeQuestion" class="card mt-6 p-5 sm:p-6">
         <ParticipantQuestion :question="activeQuestion" @submit="submit" />
-        <p v-if="error" class="mt-3 text-sm text-pulse-danger" role="alert">{{ error }}</p>
+        <p v-if="error" class="mt-3 text-sm text-audivoice-danger" role="alert">{{ error }}</p>
       </div>
     </div>
   </div>

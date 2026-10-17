@@ -309,7 +309,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   width: 17.5rem;
   height: 100%;
   flex-shrink: 0;
-  /*border-left: 1px solid color-mix(in srgb, var(--pulse-border) 80%, transparent);*/
+  /*border-left: 1px solid color-mix(in srgb, var(--audivoice-border) 80%, transparent);*/
   background: white;
   box-shadow: -8px 0 24px rgba(15, 23, 42, 0.04);
   z-index: 12;
@@ -320,7 +320,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   align-items: center;
   justify-content: space-between;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--pulse-border) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--audivoice-border) 70%, transparent);
 }
 
 .edit-panel__head h2 {
@@ -335,18 +335,18 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 0.4rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   cursor: pointer;
 }
 
 .edit-panel__close:hover {
-  background: var(--pulse-bg);
-  color: var(--pulse-ink);
+  background: var(--audivoice-bg);
+  color: var(--audivoice-ink);
 }
 
 .edit-panel__empty {
   padding: 1.5rem 1rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   font-size: 0.85rem;
 }
 
@@ -358,7 +358,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
 
 .edit-section {
   padding: 0.9rem 1rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--pulse-border) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--audivoice-border) 55%, transparent);
 }
 
 .edit-section--danger {
@@ -373,7 +373,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .edit-label {
@@ -385,7 +385,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   width: 100%;
   align-items: center;
   gap: 0.55rem;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.65rem;
   background: white;
   padding: 0.55rem 0.65rem;
@@ -394,8 +394,8 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
 }
 
 .edit-type:hover {
-  border-color: var(--pulse-purple);
-  background: var(--pulse-soft);
+  border-color: var(--audivoice-purple);
+  background: var(--audivoice-soft);
 }
 
 .edit-type__badge {
@@ -405,10 +405,10 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   align-items: center;
   justify-content: center;
   border-radius: 0.45rem;
-  background: var(--pulse-bg);
+  background: var(--audivoice-bg);
   font-size: 0.6rem;
   font-weight: 700;
-  color: var(--pulse-magenta);
+  color: var(--audivoice-magenta);
 }
 
 .edit-type__label {
@@ -418,14 +418,14 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
 }
 
 .edit-type__chev {
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   font-size: 0.7rem;
 }
 
 .edit-hint {
   margin: 0.45rem 0 0;
   font-size: 0.75rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .edit-toggle {
@@ -435,7 +435,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   gap: 0.75rem;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   margin-bottom: 0.65rem;
   cursor: pointer;
 }
@@ -470,7 +470,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
 }
 
 .edit-toggle input:checked {
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
 }
 
 .edit-toggle input:checked::after {
@@ -484,7 +484,7 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   margin-bottom: 0.7rem;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .edit-field:last-child {
@@ -503,18 +503,18 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
 }
 
 .edit-input {
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.55rem;
   padding: 0.5rem 0.65rem;
   font-size: 0.85rem;
   background: white;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   outline: none;
 }
 
 .edit-input:focus {
-  border-color: var(--pulse-purple);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pulse-purple) 16%, transparent);
+  border-color: var(--audivoice-purple);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--audivoice-purple) 16%, transparent);
 }
 
 .edit-row {
@@ -537,29 +537,29 @@ const typeLabel = (type: QuestionType) => TYPE_META[type].label
   height: 1.5rem;
   border-radius: 999px;
   background: white;
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   box-shadow: inset 0 0 0 1px #f1f5f4;
 }
 
 .edit-select {
-  border: 1px solid var(--pulse-border);
+  border: 1px solid var(--audivoice-border);
   border-radius: 0.55rem;
   padding: 0.5rem 0.65rem;
   font-size: 0.85rem;
-  background: var(--pulse-bg);
-  color: var(--pulse-muted);
+  background: var(--audivoice-bg);
+  color: var(--audivoice-muted);
 }
 
 .edit-select--active {
   background: white;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
   width: 100%;
 }
 
 .edit-danger {
   border: 0;
   background: transparent;
-  color: var(--pulse-danger);
+  color: var(--audivoice-danger);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;

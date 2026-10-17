@@ -153,9 +153,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 </script>
 
 <template>
-  <div class="min-h-screen text-white relative overflow-hidden bg-pulse-deep">
+  <div class="min-h-screen text-white relative overflow-hidden bg-audivoice-deep">
     <div
-      class="absolute inset-0 bg-gradient-to-br from-[#0b1220] via-[#0f766e] to-[#14b8a6] opacity-95"
+      class="absolute inset-0 bg-gradient-to-br from-[#0b1220] via-[#115E59] to-[#0F766E] opacity-95"
       aria-hidden="true"
     />
     <div
@@ -163,7 +163,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
       style="
         background:
           radial-gradient(ellipse 50% 40% at 20% 20%, rgba(45, 212, 191, 0.35), transparent 70%),
-          radial-gradient(ellipse 45% 35% at 80% 70%, rgba(20, 184, 166, 0.25), transparent 70%);
+          radial-gradient(ellipse 45% 35% at 80% 70%, rgba(15, 118, 110, 0.25), transparent 70%);
       "
       aria-hidden="true"
     />
@@ -171,7 +171,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
     <div class="relative z-10 flex min-h-screen flex-col">
       <header class="flex items-center justify-between px-6 py-4">
         <div class="flex items-center gap-4">
-          <span class="text-xl font-extrabold">Pulse</span>
+          <img
+            src="/logo.svg"
+            alt="Audivoice"
+            class="h-7 w-auto brightness-0 invert"
+            width="140"
+            height="29"
+          />
           <span class="opacity-80">{{ store.current?.title }}</span>
           <span
             v-if="phase === 'question'"
@@ -183,7 +189,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
         <div class="flex items-center gap-3">
           <ConnectionPill :state="connectionState" />
           <span class="text-sm font-medium">{{ store.participantCount }} participants</span>
-          <Button variant="secondary" class="!text-pulse-ink" @click="end">End</Button>
+          <Button variant="secondary" class="!text-audivoice-ink" @click="end">End</Button>
         </div>
       </header>
 
@@ -196,11 +202,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           {{ store.current?.joinCode }}
         </p>
         <div class="mt-10 grid gap-8 sm:grid-cols-2 items-center">
-          <div class="bg-white rounded-2xl p-4 text-pulse-ink" v-html="qrSvg" />
+          <div class="bg-white rounded-2xl p-4 text-audivoice-ink" v-html="qrSvg" />
           <div class="text-left sm:text-center">
             <p class="text-3xl font-bold">{{ store.participantCount }}</p>
             <p class="opacity-80">participants joined</p>
-            <Button class="mt-6 !bg-white !text-pulse-purple" @click="next">Start presentation</Button>
+            <Button class="mt-6 !bg-white !text-audivoice-purple" @click="next">Start presentation</Button>
           </div>
         </div>
       </main>
@@ -213,7 +219,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
         <div
           v-if="activeIsContent && activeQuestion"
-          class="w-full max-w-5xl rounded-3xl bg-white/95 p-8 sm:p-10 text-pulse-ink shadow-soft"
+          class="w-full max-w-5xl rounded-3xl bg-white/95 p-8 sm:p-10 text-audivoice-ink shadow-soft"
         >
           <ContentSlideDisplay
             :type="activeQuestion.type"
@@ -227,7 +233,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           <h2 class="max-w-4xl text-center text-3xl sm:text-5xl font-extrabold leading-tight">
             {{ activeQuestion?.prompt }}
           </h2>
-          <div class="mt-12 w-full max-w-4xl text-pulse-ink">
+          <div class="mt-12 w-full max-w-4xl text-audivoice-ink">
             <div v-if="showResults && results" class="rounded-3xl bg-white/95 p-8 shadow-soft">
               <LiveResultsView :results="results" large />
             </div>
@@ -239,14 +245,14 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
       <footer class="absolute bottom-0 inset-x-0 bg-black/20 backdrop-blur px-4 py-3">
         <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 text-sm">
           <div class="flex flex-wrap gap-2">
-            <Button variant="secondary" class="!text-pulse-ink !py-2" @click="prev">Previous</Button>
-            <Button variant="secondary" class="!text-pulse-ink !py-2" @click="next">Next</Button>
+            <Button variant="secondary" class="!text-audivoice-ink !py-2" @click="prev">Previous</Button>
+            <Button variant="secondary" class="!text-audivoice-ink !py-2" @click="next">Next</Button>
             <template v-if="!activeIsContent">
-              <Button variant="secondary" class="!text-pulse-ink !py-2" @click="toggleClose">
+              <Button variant="secondary" class="!text-audivoice-ink !py-2" @click="toggleClose">
                 {{ activeQuestion?.status === 'ACTIVE' ? 'Close responses' : 'Reopen' }}
               </Button>
-              <Button variant="secondary" class="!text-pulse-ink !py-2" @click="clear">Clear</Button>
-              <Button variant="secondary" class="!text-pulse-ink !py-2" @click="showResults = !showResults">
+              <Button variant="secondary" class="!text-audivoice-ink !py-2" @click="clear">Clear</Button>
+              <Button variant="secondary" class="!text-audivoice-ink !py-2" @click="showResults = !showResults">
                 {{ showResults ? 'Hide results' : 'Show results' }}
               </Button>
             </template>

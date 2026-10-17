@@ -41,7 +41,7 @@ async function shareResults() {
   const url = `${window.location.origin}/app/sessions/${props.sessionId}?tab=results`
   try {
     if (navigator.share) {
-      await navigator.share({ title: props.title || 'Pulse results', url })
+      await navigator.share({ title: props.title || 'Audivoice results', url })
     } else {
       await navigator.clipboard.writeText(url)
     }
@@ -121,13 +121,13 @@ watch(
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .editor-results__sub {
   margin: 0.25rem 0 0;
   font-size: 0.85rem;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
 }
 
 .editor-results__actions {
@@ -147,12 +147,12 @@ watch(
 
 .editor-results__btn--ghost {
   background: white;
-  color: var(--pulse-ink);
-  border: 1px solid var(--pulse-border);
+  color: var(--audivoice-ink);
+  border: 1px solid var(--audivoice-border);
 }
 
 .editor-results__btn--primary {
-  background: var(--pulse-purple);
+  background: var(--audivoice-purple);
   color: white;
 }
 
@@ -168,7 +168,7 @@ watch(
 
 .editor-results__card {
   background: white;
-  border: 1px solid color-mix(in srgb, var(--pulse-border) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--audivoice-border) 80%, transparent);
   border-radius: 0.85rem;
   padding: 1.25rem 1.4rem 1.4rem;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -179,13 +179,13 @@ watch(
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--pulse-ink);
+  color: var(--audivoice-ink);
 }
 
 .editor-results__status {
   margin: 1.5rem 0;
   text-align: center;
-  color: var(--pulse-muted);
+  color: var(--audivoice-muted);
   font-size: 0.9rem;
 }
 

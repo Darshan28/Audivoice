@@ -12,7 +12,7 @@ defineEmits<{ 'update:modelValue': [value: string] }>()
 
 <template>
   <label class="block space-y-2">
-    <span v-if="label" class="text-sm font-medium text-pulse-ink">{{ label }}</span>
+    <span v-if="label" class="text-sm font-medium text-audivoice-ink">{{ label }}</span>
     <input
       class="input"
       :type="type || 'text'"
