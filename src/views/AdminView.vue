@@ -85,6 +85,11 @@ function selectUser(user: AdminUserDTO) {
   tab.value = 'users'
 }
 
+function openLogins() {
+  selectedAuthUserId.value = null
+  tab.value = 'logins'
+}
+
 async function logout() {
   await auth.signOut()
   await router.push('/')
@@ -162,10 +167,7 @@ onMounted(async () => {
               ? 'bg-audivoice-soft text-audivoice-magenta'
               : 'text-audivoice-muted hover:text-audivoice-ink'
           "
-          @click="
-            selectedAuthUserId = null
-            tab = 'logins'
-          "
+          @click="openLogins"
         >
           Login audit
         </button>
