@@ -8,10 +8,9 @@ usePageSeo(contactSeo)
 </script>
 
 <template>
-  <div>
-    <MarketingHero eyebrow="Contact" :title="contactPage.h1" wide />
-
-    <div class="mkt-contact-layout">
+  <div class="mkt-contact-layout">
+    <div>
+      <MarketingHero eyebrow="Contact" :title="contactPage.h1" wide />
       <aside class="mkt-contact-aside">
         <p class="mkt-body">{{ contactPage.intro }}</p>
         <p class="mkt-note">
@@ -19,9 +18,9 @@ usePageSeo(contactSeo)
           <a class="underline" :href="`mailto:${contactPage.mailto}`">{{ contactPage.mailto }}</a>
         </p>
       </aside>
-      <section>
-        <ContactForm />
-      </section>
     </div>
+    <section class="mkt-contact-form">
+      <ContactForm />
+    </section>
   </div>
 </template>

@@ -979,11 +979,20 @@ const isHome = computed(() => route.name === 'landing')
   margin-top: 0.5rem;
 }
 
+.mkt-contact-layout .mkt-hero {
+  max-width: none;
+  padding-bottom: 1.25rem;
+}
+
 @media (min-width: 880px) {
   .mkt-contact-layout {
     grid-template-columns: 1fr 1.15fr;
     gap: 3.5rem;
     align-items: start;
+  }
+
+  .mkt-contact-form {
+    padding-top: 2.75rem;
   }
 }
 
