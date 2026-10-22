@@ -1,8 +1,7 @@
+# Private routes send X-Robots-Tag: noindex (vercel.json).
+# Do not Disallow them. A robots.txt block stops Google from recrawling
+# URLs it already indexed, which leaves them as "Indexed, though blocked by robots.txt".
 User-agent: *
 Allow: /
-Disallow: /app/
-Disallow: /participant/
-Disallow: /auth/callback
-Disallow: /demo
 
 Sitemap: https://www.audivoice.com/sitemap.xml
