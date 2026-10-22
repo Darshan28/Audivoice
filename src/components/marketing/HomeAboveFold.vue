@@ -6,6 +6,38 @@ import { useAuthStore } from '@/stores/authStore'
 const router = useRouter()
 const auth = useAuthStore()
 
+// The rise keeps each bubble off-screen until about 54% of the 16.2s cycle.
+// Lead by 11s so one message is already on screen at first paint.
+const feedStaggerMs = 2700
+const feedVisibleLeadMs = 11000
+
+const feedbackBubbles = [
+  {
+    src: '/illustration/Friendly%20Chat%20Bubble%20UI%20Illustration.png',
+    alt: 'Could we compare one more option?',
+  },
+  {
+    src: '/illustration/Glossy%20UI%20Comment%20Bubble.png',
+    alt: 'Love this direction! The UI feels much more intuitive now.',
+  },
+  {
+    src: '/illustration/Looks%20Perfect%20Feedback%20Bubble.png',
+    alt: "Looks perfect! Let's go ahead with this design.",
+  },
+  {
+    src: '/illustration/Mobile%20Feedback%20Chat%20Bubble.png',
+    alt: 'This looks great! Can we also explore a mobile version?',
+  },
+  {
+    src: '/illustration/Cheerful%20Team%20Feedback%20Bubble.png',
+    alt: 'This would be super helpful for our team!',
+  },
+  {
+    src: '/illustration/Analytics%20feedback%20chat%20bubble.png',
+    alt: 'Can we also look at the analytics for this feature?',
+  },
+]
+
 async function startCreateSession() {
   await auth.init()
   setAuthIntent('/app/sessions/new')
@@ -120,11 +152,32 @@ async function startCreateSession() {
       </div>
 
       <div class="landing-stage landing-fade landing-fade--delay">
-        <img
-          class="landing-stage-img"
-          src="/audivoice-hero.png"
-          alt="Audivoice live session dashboard with audience phone view and real-time responses"
-        />
+        <div class="landing-scene">
+          <img
+            class="landing-stage-img"
+            src="/illustration/landing_illustration.png"
+            width="1603"
+            height="981"
+            alt="A presenter leading a live Audivoice session while the audience answers on their phones"
+          />
+          <img
+            class="landing-qr"
+            src="/illustration/qr_illustration.png"
+            width="1303"
+            height="1207"
+            alt="Join this session at audivoice.com/join with code 72941"
+          />
+          <div class="landing-feed" aria-label="Live audience feedback">
+            <div
+              v-for="(bubble, index) in feedbackBubbles"
+              :key="bubble.src"
+              class="landing-feed-item"
+              :style="{ animationDelay: `${index * feedStaggerMs - feedVisibleLeadMs}ms` }"
+            >
+              <img :src="bubble.src" :alt="bubble.alt" width="1774" height="887" />
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -207,10 +260,10 @@ async function startCreateSession() {
 @media (min-width: 960px) {
   .landing-hero {
     grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
-    gap: clamp(2.5rem, 5vw, 5.5rem);
-    /* Left aligns with 1120px layout; no right padding so stage stays full-bleed */
+    gap: clamp(1.5rem, 3vw, 3rem);
+    /* Left aligns with the 1120px layout; right inset keeps the illustration on screen */
     padding-top: 5.5rem;
-    padding-right: 0;
+    padding-right: clamp(1rem, 2.5vw, 2.25rem);
     padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
     padding-left: max(1.25rem, calc((100% - 1120px) / 2 + 1.25rem));
   }
@@ -379,14 +432,77 @@ async function startCreateSession() {
   }
 }
 
-.landing-stage-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-height: min(88vh, calc(100svh - 4.5rem));
-  object-fit: contain;
-  object-position: center right;
+.landing-scene {
+  position: relative;
+  width: min(100%, calc(min(82vh, 760px) * 1603 / 981));
+  aspect-ratio: 1603 / 981;
   animation: landing-stage-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.landing-stage-img,
+.landing-qr {
+  display: block;
+  height: auto;
+}
+
+.landing-stage-img {
+  width: 100%;
+}
+
+.landing-qr {
+  position: absolute;
+  z-index: 2;
+  /* Rests on the left plant, in front of the leaves, with the presenter left clear */
+  left: -7%;
+  top: 5%;
+  width: 24%;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 22px rgba(15, 23, 42, 0.16));
+}
+
+.landing-feed {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 44%;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 78%, transparent 100%);
+}
+
+.landing-feed-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  animation: landing-feed-rise 16.2s linear infinite both;
+}
+
+.landing-feed-item img {
+  width: 62%;
+  height: auto;
+  margin-right: 2%;
+  filter: drop-shadow(0 10px 16px rgba(15, 23, 42, 0.14));
+}
+
+@keyframes landing-feed-rise {
+  0% {
+    transform: translateY(104%);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-88%);
+    opacity: 0;
+  }
 }
 
 .landing-fade {
@@ -477,9 +593,37 @@ async function startCreateSession() {
 @media (prefers-reduced-motion: reduce) {
   .landing-fade,
   .landing-fade--delay,
+  .landing-scene,
   .landing-stage-img,
+  .landing-qr,
+  .landing-feed-item,
   .landing-orb {
     animation: none !important;
+  }
+
+  .landing-feed {
+    mask-image: none;
+  }
+
+  .landing-feed-item {
+    inset: auto;
+    right: 0;
+    left: 0;
+    align-items: flex-start;
+    opacity: 1;
+    transform: none;
+  }
+
+  .landing-feed-item:nth-child(1) {
+    top: 8%;
+  }
+
+  .landing-feed-item:nth-child(2) {
+    top: 34%;
+  }
+
+  .landing-feed-item:nth-child(n + 3) {
+    display: none;
   }
 }
 </style>
