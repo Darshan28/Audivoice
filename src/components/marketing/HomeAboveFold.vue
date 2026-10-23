@@ -8,7 +8,7 @@ const auth = useAuthStore()
 
 // The rise keeps each bubble off-screen until about 54% of the 16.2s cycle.
 // Lead by 11s so one message is already on screen at first paint.
-const feedStaggerMs = 2700
+const feedStaggerMs = 2400
 const feedVisibleLeadMs = 11000
 
 const feedbackBubbles = [
@@ -110,45 +110,6 @@ async function startCreateSession() {
             Join a session
           </button>
         </div>
-
-        <ul class="landing-features">
-          <li>
-            <span class="landing-feature-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="8" r="3.25" stroke="currentColor" stroke-width="1.75" />
-                <path
-                  d="M5.5 19.5c1.6-3 3.9-4.5 6.5-4.5s4.9 1.5 6.5 4.5"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </span>
-            No account required for participants
-          </li>
-          <li>
-            <span class="landing-feature-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.75" />
-                <path d="M8 20.5h8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-              </svg>
-            </span>
-            Works on any device
-          </li>
-          <li>
-            <span class="landing-feature-icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M5 18V11M11 18V7M17 18V13"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </span>
-            Live responses in real time
-          </li>
-        </ul>
       </div>
 
       <div class="landing-stage landing-fade landing-fade--delay">
@@ -179,6 +140,45 @@ async function startCreateSession() {
           </div>
         </div>
       </div>
+
+      <ul class="landing-features landing-fade">
+        <li>
+          <span class="landing-feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="3.25" stroke="currentColor" stroke-width="1.75" />
+              <path
+                d="M5.5 19.5c1.6-3 3.9-4.5 6.5-4.5s4.9 1.5 6.5 4.5"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+          No account required for participants
+        </li>
+        <li>
+          <span class="landing-feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.75" />
+              <path d="M8 20.5h8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+            </svg>
+          </span>
+          Works on any device
+        </li>
+        <li>
+          <span class="landing-feature-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 18V11M11 18V7M17 18V13"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+          Live responses in real time
+        </li>
+      </ul>
     </main>
   </div>
 </template>
@@ -252,20 +252,30 @@ async function startCreateSession() {
   gap: 1.75rem;
   width: 100%;
   min-height: 0;
-  /* Top padding clears the fixed glass nav from MarketingLayout */
-  padding: 5.25rem 1.25rem 1.5rem;
+  /* Top padding clears the floating rounded nav */
+  padding: 5.75rem 1.25rem 1.5rem;
   grid-template-columns: 1fr;
 }
 
 @media (min-width: 960px) {
   .landing-hero {
     grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
-    /* Left aligns with the 1120px layout; right inset keeps the illustration on screen */
-    padding-top: 5.5rem;
-    padding-right: clamp(1rem, 2.5vw, 2.25rem);
+    grid-template-rows: auto auto;
+    align-content: center;
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+    row-gap: clamp(1.25rem, 3vh, 2rem);
+    /* Both sides match the marketing layout inset */
+    padding-top: 6rem;
     padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
-    padding-left: max(1.25rem, calc((100% - 1120px) / 2 + 1.25rem));
+    padding-inline: max(1.25rem, calc((100% - var(--mkt-max, 1360px)) / 2 + 1.25rem));
+  }
+
+  .landing-features {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 1.25rem 2rem;
   }
 }
 
@@ -469,7 +479,9 @@ async function startCreateSession() {
   width: 44%;
   overflow: hidden;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 78%, transparent 100%);
+  /* Audience heads start just under this line. Bubbles stay hidden on the
+     characters and only fade in once they have cleared them. */
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 50%, transparent 58%);
 }
 
 .landing-feed-item {
@@ -549,7 +561,7 @@ async function startCreateSession() {
   .landing-hero {
     align-content: center;
     justify-items: center;
-    padding-top: 5rem;
+    padding-top: 5.5rem;
     text-align: left;
   }
 
@@ -579,10 +591,12 @@ async function startCreateSession() {
   }
 
   .landing-features {
+    width: 100%;
+    max-width: 24rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
-    margin-top: 1.5rem;
+    margin-top: 0.25rem;
   }
 
   .landing-stage {

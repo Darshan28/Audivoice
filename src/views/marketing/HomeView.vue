@@ -159,13 +159,13 @@ usePageSeo(homeSeo)
 </template>
 
 <style scoped>
-/* Match interior marketing pages (1120px) — not the above-fold hero gutters */
+/* Match interior marketing pages — not the above-fold hero gutters */
 .home-page {
   background: #f7f8fb;
 }
 
 .home-shell {
-  max-width: 1120px;
+  max-width: var(--mkt-max, 1360px);
   margin: 0 auto;
   width: 100%;
   padding-inline: 1.25rem;
@@ -542,7 +542,7 @@ usePageSeo(homeSeo)
 }
 
 .home-page :deep(.mkt-band-inner) {
-  max-width: 1120px;
+  max-width: var(--mkt-max, 1360px);
   margin: 0 auto;
   width: 100%;
   padding-inline: 1.25rem;

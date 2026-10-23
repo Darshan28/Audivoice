@@ -51,6 +51,7 @@ const isHome = computed(() => route.name === 'landing')
   --mkt-teal: #0F766E;
   --mkt-teal-deep: #115E59;
   --mkt-line: #CCE8E3;
+  --mkt-max: 1360px;
   position: relative;
   min-height: 100vh;
   color: var(--mkt-ink);
@@ -100,10 +101,10 @@ const isHome = computed(() => route.name === 'landing')
 }
 
 .mkt-main {
-  max-width: 1120px;
+  max-width: var(--mkt-max);
   margin: 0 auto;
-  /* Offset fixed glass nav (~4.5–5rem) */
-  padding: 5.25rem 1.25rem 4rem;
+  /* Clears the floating nav (top offset + pill height + gap) */
+  padding: 6rem 1.25rem 4rem;
 }
 
 .mkt--home {
@@ -124,7 +125,7 @@ const isHome = computed(() => route.name === 'landing')
 }
 
 .mkt-footer-shell {
-  max-width: 1120px;
+  max-width: var(--mkt-max);
   margin: 0 auto;
   padding-inline: 1.25rem;
   box-sizing: border-box;
@@ -198,7 +199,7 @@ const isHome = computed(() => route.name === 'landing')
 }
 
 .mkt-band-inner {
-  max-width: 1120px;
+  max-width: var(--mkt-max);
   margin: 0 auto;
   padding: 3rem 1.4rem;
 

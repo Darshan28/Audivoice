@@ -10,20 +10,48 @@ const auth = useAuthStore()
 const signedIn = ref(false)
 const menuOpen = ref(false)
 const scrolled = ref(false)
+/** Dark bands sit under the bar. Teal ones need an all-white mark; brand teal disappears on them. */
+const onDark = ref(false)
+const onTeal = ref(false)
+let bandObserver: MutationObserver | null = null
 
-function updateScrolled() {
+function updateNavChrome() {
   scrolled.value = window.scrollY > 8
+  const bar = document.querySelector('.mkt-nav-bar')
+  if (!bar) {
+    onDark.value = false
+    onTeal.value = false
+    return
+  }
+  const { top, bottom } = bar.getBoundingClientRect()
+  const mid = (top + bottom) / 2
+  const band = Array.from(document.querySelectorAll('.mkt-band--ink, .mkt-band--teal, .home-block--teal')).find(
+    (node) => {
+      const rect = node.getBoundingClientRect()
+      return rect.top <= mid && rect.bottom >= mid
+    },
+  )
+  onDark.value = Boolean(band)
+  onTeal.value = Boolean(band?.classList.contains('mkt-band--teal') || band?.classList.contains('home-block--teal'))
 }
 
 onMounted(async () => {
-  updateScrolled()
-  window.addEventListener('scroll', updateScrolled, { passive: true })
+  updateNavChrome()
+  window.addEventListener('scroll', updateNavChrome, { passive: true })
+  window.addEventListener('resize', updateNavChrome, { passive: true })
+  const main = document.querySelector('.mkt-main')
+  if (main) {
+    bandObserver = new MutationObserver(() => updateNavChrome())
+    bandObserver.observe(main, { childList: true, subtree: true })
+  }
   await auth.init()
   signedIn.value = auth.isAuthenticated
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', updateScrolled)
+  bandObserver?.disconnect()
+  window.removeEventListener('scroll', updateNavChrome)
+  window.removeEventListener('resize', updateNavChrome)
 })
 function closeMenu() {
   menuOpen.value = false
@@ -57,10 +85,34 @@ async function goDashboard() {
 </script>
 
 <template>
-  <header class="mkt-nav" :class="{ 'mkt-nav--scrolled': scrolled, 'mkt-nav--menu-open': menuOpen }">
+  <header
+    class="mkt-nav"
+    :class="{
+      'mkt-nav--scrolled': scrolled,
+      'mkt-nav--menu-open': menuOpen,
+      'mkt-nav--on-dark': onDark,
+      'mkt-nav--on-teal': onTeal,
+    }"
+  >
     <div class="mkt-nav-bar">
       <RouterLink to="/" class="mkt-nav-brand" aria-label="Audivoice home" @click="closeMenu">
-        <img src="/logo.svg" alt="Audivoice" class="mkt-nav-logo" width="160" height="33" />
+        <span class="mkt-nav-logos">
+          <img src="/logo.svg" alt="" class="mkt-nav-logo mkt-nav-logo--for-light" width="160" height="33" />
+          <img
+            src="/logo-on-dark.svg"
+            alt=""
+            class="mkt-nav-logo mkt-nav-logo--for-dark"
+            width="160"
+            height="33"
+          />
+          <img
+            src="/logo-on-teal.svg"
+            alt=""
+            class="mkt-nav-logo mkt-nav-logo--for-teal"
+            width="160"
+            height="33"
+          />
+        </span>
       </RouterLink>
 
       <nav class="mkt-nav-links" aria-label="Primary">
@@ -122,25 +174,13 @@ async function goDashboard() {
   --nav-teal: #0f766e;
   --nav-teal-deep: #115e59;
   position: fixed;
-  top: 0;
+  top: max(0.7rem, env(safe-area-inset-top, 0px));
   left: 0;
   right: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px) saturate(1.25);
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
-  border-bottom: 1px solid transparent;
-  transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
-}
-
-.mkt-nav--scrolled,
-.mkt-nav--menu-open {
-  background: rgba(255, 255, 255, 0.78);
-  border-bottom-color: rgba(204, 232, 227, 0.85);
-  box-shadow: 0 8px 28px rgba(15, 39, 42, 0.06);
+  padding-inline: max(0.75rem, env(safe-area-inset-left, 0px))
+    max(0.75rem, env(safe-area-inset-right, 0px));
+  pointer-events: none;
 }
 
 .mkt-nav-bar {
@@ -148,18 +188,81 @@ async function goDashboard() {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 0.75rem 1rem;
+  gap: 0.5rem 0.75rem;
   width: 100%;
-  max-width: 1120px;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: 0.85rem 1.25rem;
+  padding: 0.4rem 0.45rem 0.4rem 0.95rem;
   box-sizing: border-box;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 10px 28px rgba(15, 39, 42, 0.08);
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    border-radius 0.22s ease,
+    backdrop-filter 0.22s ease,
+    -webkit-backdrop-filter 0.22s ease;
+}
+
+/* Frost the bar once page content passes behind it. */
+.mkt-nav--scrolled .mkt-nav-bar {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(22px) saturate(1.8);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 12px 36px rgba(15, 39, 42, 0.1);
+}
+
+.mkt-nav--menu-open .mkt-nav-bar {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(20px) saturate(1.45);
+  -webkit-backdrop-filter: blur(20px) saturate(1.45);
+  border-color: rgba(204, 232, 227, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 16px 40px rgba(15, 39, 42, 0.12);
+}
+
+.mkt-nav--menu-open .mkt-nav-bar {
+  border-radius: 1.35rem;
+}
+
+/* Dark bands show through the frost, so flip to a dark glass with light type. */
+.mkt-nav--on-dark {
+  --nav-ink: #f8fafc;
+  --nav-muted: rgba(248, 250, 252, 0.86);
+}
+
+.mkt-nav--on-dark .mkt-nav-bar,
+.mkt-nav--on-dark.mkt-nav--scrolled .mkt-nav-bar,
+.mkt-nav--on-dark.mkt-nav--menu-open .mkt-nav-bar {
+  background: rgba(8, 15, 28, 0.58);
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 12px 36px rgba(0, 0, 0, 0.28);
 }
 
 @media (min-width: 960px) {
   .mkt-nav-bar {
-    grid-template-columns: auto 1fr auto;
-    padding: 0.95rem 1.25rem;
+    grid-template-columns: auto auto auto;
+    width: max-content;
+    max-width: 100%;
+    justify-content: center;
+    gap: 0.35rem 1.15rem;
+    padding: 0.4rem 0.45rem 0.4rem 1.15rem;
   }
 }
 
@@ -170,11 +273,38 @@ async function goDashboard() {
   justify-self: start;
 }
 
+.mkt-nav-logos {
+  display: grid;
+}
+
 .mkt-nav-logo {
   display: block;
   height: 1.85rem;
   width: auto;
   object-fit: contain;
+  grid-area: 1 / 1;
+  transition: opacity 0.2s ease;
+}
+
+.mkt-nav-logo--for-dark,
+.mkt-nav-logo--for-teal {
+  opacity: 0;
+}
+
+.mkt-nav--on-dark .mkt-nav-logo--for-light {
+  opacity: 0;
+}
+
+.mkt-nav--on-dark .mkt-nav-logo--for-dark {
+  opacity: 1;
+}
+
+.mkt-nav--on-teal .mkt-nav-logo--for-dark {
+  opacity: 0;
+}
+
+.mkt-nav--on-teal .mkt-nav-logo--for-teal {
+  opacity: 1;
 }
 
 .mkt-nav-links {
@@ -223,6 +353,15 @@ async function goDashboard() {
   font-weight: 600;
   color: var(--nav-ink);
   cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.mkt-nav--on-dark .mkt-nav-menu-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 @media (min-width: 960px) {
@@ -257,15 +396,15 @@ async function goDashboard() {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   border: 0;
   border-radius: 9999px;
   background: var(--nav-teal);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 500;
-  padding: 0.7rem 1.25rem;
-  min-height: 2.75rem;
+  padding: 0.55rem 1.05rem;
+  min-height: 2.45rem;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(15, 118, 110, 0.18);
   transition:
@@ -279,18 +418,30 @@ async function goDashboard() {
   transform: translateY(-1px);
 }
 
+.mkt-nav--on-dark .mkt-nav-cta {
+  background: #f0fdfa;
+  color: #115e59;
+  box-shadow: none;
+}
+
+.mkt-nav--on-dark .mkt-nav-cta:hover {
+  background: #fff;
+  color: #115e59;
+}
+
 .mkt-nav-mobile {
   display: none;
   grid-column: 1 / -1;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.25rem;
+  gap: 0.15rem;
   margin-top: 0.35rem;
-  padding: 0.85rem;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #e2e8f0;
-  border-radius: 1.15rem;
-  box-shadow: 0 16px 36px rgba(15, 39, 42, 0.08);
+  padding: 0.55rem 0.2rem 0.25rem;
+  border-top: 1px solid rgba(204, 232, 227, 0.9);
+}
+
+.mkt-nav--on-dark .mkt-nav-mobile {
+  border-top-color: rgba(255, 255, 255, 0.16);
 }
 
 .mkt-nav-mobile--open {
@@ -323,14 +474,21 @@ async function goDashboard() {
   background: rgba(15, 118, 110, 0.06);
 }
 
+.mkt-nav--on-dark .mkt-nav-mobile-link:hover,
+.mkt-nav--on-dark .mkt-nav-mobile-link.router-link-active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .mkt-nav-mobile-cta {
   margin-top: 0.35rem;
   width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mkt-nav,
-  .mkt-nav-cta {
+  .mkt-nav-bar,
+  .mkt-nav-cta,
+  .mkt-nav-logo,
+  .mkt-nav-menu-btn {
     transition: none;
   }
 
